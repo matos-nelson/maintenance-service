@@ -23,8 +23,8 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - property:/var/lib/mysql
-      - ./../../../db/sql/create_maintenance_schema.sql:/docker-entrypoint-initdb.d/create_maintenance_schema.sql
+      - maintenance:/var/lib/mysql
+      - ./../../../db/sql/create_maintenance_schemas.sql:/docker-entrypoint-initdb.d/create_maintenance_schemas.sql
 volumes:
-  property:
+  maintenance:
     driver: local
