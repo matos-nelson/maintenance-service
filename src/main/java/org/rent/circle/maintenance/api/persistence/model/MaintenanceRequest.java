@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.rent.circle.maintenance.api.enums.Status;
 import org.rent.circle.maintenance.api.persistence.BaseModel;
 
 @Entity
@@ -40,7 +39,7 @@ public class MaintenanceRequest extends BaseModel {
     private String description;
 
     @Column(name = "status")
-    private Status status;
+    private String status;
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;

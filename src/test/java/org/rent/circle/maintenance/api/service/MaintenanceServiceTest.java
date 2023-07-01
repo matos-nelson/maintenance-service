@@ -8,7 +8,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.rent.circle.maintenance.api.dto.SaveMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.persistence.model.MaintenanceRequest;
 import org.rent.circle.maintenance.api.persistence.repository.MaintenanceRequestRepository;
 import org.rent.circle.maintenance.api.service.mapper.MaintenanceMapper;
@@ -32,7 +32,7 @@ public class MaintenanceServiceTest {
             .ownerId(1L)
             .residentId(2L)
             .propertyId(3L)
-            .categoryId(3L)
+            .categoryId(4L)
             .description("description")
             .build();
 

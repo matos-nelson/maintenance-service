@@ -4,7 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.rent.circle.maintenance.api.dto.SaveMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.enums.Status;
 import org.rent.circle.maintenance.api.persistence.model.MaintenanceRequest;
 import org.rent.circle.maintenance.api.persistence.repository.MaintenanceRequestRepository;
@@ -23,7 +23,7 @@ public class MaintenanceService {
 
         MaintenanceRequest maintenanceRequest = maintenanceMapper.toModel(saveRequest);
 
-        maintenanceRequest.setStatus(Status.IN_PROGRESS);
+        maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
         maintenanceRequestRepository.persist(maintenanceRequest);
 
         return maintenanceRequest.getId();

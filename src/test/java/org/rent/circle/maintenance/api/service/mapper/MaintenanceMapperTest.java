@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.rent.circle.maintenance.api.dto.SaveMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.persistence.model.MaintenanceRequest;
 
 @QuarkusTest
@@ -34,7 +34,7 @@ public class MaintenanceMapperTest {
             .ownerId(1L)
             .residentId(2L)
             .propertyId(3L)
-            .categoryId(3L)
+            .categoryId(4L)
             .description("description")
             .build();
 

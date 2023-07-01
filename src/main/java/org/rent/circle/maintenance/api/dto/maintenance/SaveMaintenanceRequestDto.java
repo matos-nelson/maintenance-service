@@ -1,4 +1,4 @@
-package org.rent.circle.maintenance.api.dto;
+package org.rent.circle.maintenance.api.dto.maintenance;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
