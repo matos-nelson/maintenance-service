@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS category (
   updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE IF NOT EXISTS request (
+CREATE TABLE IF NOT EXISTS maintenance_request (
   id bigint PRIMARY KEY AUTO_INCREMENT,
   owner_id bigint NOT NULL,
   resident_id bigint NOT NULL,
@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS request (
   category_id smallint NOT NULL,
   description varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   status varchar(15) NOT NULL DEFAULT 'IN_PROGRESS',
+  completed_at datetime DEFAULT NULL,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY owner_id_idx (owner_id),
