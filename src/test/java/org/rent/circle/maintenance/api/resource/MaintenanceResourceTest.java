@@ -3,6 +3,7 @@ package org.rent.circle.maintenance.api.resource;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -128,6 +129,40 @@ public class MaintenanceResourceTest {
                 "description", is("Windows"),
                 "status", is("COMPLETED"),
                 "completedAt", is(notNullValue()),
+                "category.id", is(1),
+                "category.name", is("Appliance"));
+    }
+
+    @Test
+    public void GET_WhenAMaintenanceRequestCantBeFound_ShouldReturnNoContent() {
+        // Arrange
+
+        // Act
+        // Assert
+        given()
+            .when()
+            .get("/request/123")
+            .then()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    public void GET_WhenAMaintenanceRequestIsFound_ShouldReturnMaintenanceRequest() {
+        // Arrange
+
+        // Act
+        // Assert
+        given()
+            .when()
+            .get("/request/100")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .body("ownerId", is(1),
+                "residentId", is(1),
+                "propertyId", is(1),
+                "description", is("Windows"),
+                "status", is("IN_PROGRESS"),
+                "completedAt", is(nullValue()),
                 "category.id", is(1),
                 "category.name", is("Appliance"));
     }

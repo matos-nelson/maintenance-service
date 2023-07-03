@@ -88,6 +88,7 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getResidentId(), result.getResidentId());
         assertEquals(maintenanceRequest.getPropertyId(), result.getPropertyId());
         assertEquals(maintenanceRequest.getDescription(), result.getDescription());
+        assertEquals(maintenanceRequest.getNote(), result.getNote());
         assertEquals(maintenanceRequest.getStatus(), result.getStatus());
         assertEquals(maintenanceRequest.getCategory().getId(), result.getCategory().getId());
         assertEquals(maintenanceRequest.getCategory().getName(), result.getCategory().getName());

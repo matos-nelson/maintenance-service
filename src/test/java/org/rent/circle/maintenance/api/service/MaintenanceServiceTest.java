@@ -180,4 +180,35 @@ public class MaintenanceServiceTest {
         // Assert
         Mockito.verify(maintenanceRequestRepository, times(0)).persist((MaintenanceRequest) Mockito.any());
     }
+
+    @Test
+    public void getRequest_WhenMaintenanceWithGivenIsNotFound_ShouldReturnNull() {
+        // Arrange
+        Long maintenanceRequestId = 1L;
+        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(null);
+
+        // Act
+        MaintenanceRequestDto result = maintenanceService.getRequest(maintenanceRequestId);
+
+        // Assert
+        assertNull(result);
+    }
+
+    @Test
+    public void getRequest_WhenMaintenanceWithGivenIsFound_ShouldReturnMaintenanceRequest() {
+        // Arrange
+        Long maintenanceRequestId = 1L;
+
+        MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
+        maintenanceRequest.setId(maintenanceRequestId);
+
+        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(null);
+        when(maintenanceMapper.toDto(maintenanceRequest)).thenReturn(new MaintenanceRequestDto());
+
+        // Act
+        MaintenanceRequestDto result = maintenanceService.getRequest(maintenanceRequestId);
+
+        // Assert
+        assertNull(result);
+    }
 }

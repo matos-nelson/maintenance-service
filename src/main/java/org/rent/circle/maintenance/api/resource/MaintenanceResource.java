@@ -2,9 +2,11 @@ package org.rent.circle.maintenance.api.resource;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import lombok.AllArgsConstructor;
@@ -34,5 +36,11 @@ public class MaintenanceResource {
     public MaintenanceRequestDto updateMaintenanceRequest(
         @Valid UpdateMaintenanceRequestDto updateMaintenanceRequestDto) {
         return maintenanceService.updateRequest(updateMaintenanceRequestDto);
+    }
+
+    @GET
+    @Path("/request/{id}")
+    public MaintenanceRequestDto getMaintenanceRequest(@PathParam("id") Long maintenanceRequestId) {
+        return maintenanceService.getRequest(maintenanceRequestId);
     }
 }
