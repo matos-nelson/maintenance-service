@@ -48,9 +48,6 @@ public class MaintenanceServiceTest {
             .description("description")
             .build();
 
-        MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
-        maintenanceRequest.setId(123L);
-
         when(categoryRepository.findById(saveMaintenanceRequestDto.getCategoryId())).thenReturn(null);
 
         // Act
@@ -141,6 +138,7 @@ public class MaintenanceServiceTest {
         Long maintenanceRequestId = 1L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .note("Completed Request")
             .status(Status.COMPLETED)
             .build();
 
@@ -157,6 +155,7 @@ public class MaintenanceServiceTest {
         // Assert
         assertNotNull(result);
         Mockito.verify(maintenanceRequestRepository, times(1)).persist(maintenanceRequest);
+        assertEquals(updateMaintenanceRequestDto.getNote(), maintenanceRequest.getNote());
         assertEquals(Status.COMPLETED.value, maintenanceRequest.getStatus());
         assertNotNull(maintenanceRequest.getCompletedAt());
     }

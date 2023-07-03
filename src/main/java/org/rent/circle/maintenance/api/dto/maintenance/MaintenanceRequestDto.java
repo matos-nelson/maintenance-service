@@ -14,6 +14,7 @@ public class MaintenanceRequestDto {
     private Long propertyId;
     private CategoryDto category;
     private String description;
+    private String note;
     private String status;
     private LocalDateTime completedAt;
 }

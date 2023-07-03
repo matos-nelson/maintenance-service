@@ -63,6 +63,7 @@ public class MaintenanceService {
         }
 
         maintenanceRequestDb.setStatus(updateRequest.getStatus().value);
+        maintenanceRequestDb.setNote(updateRequest.getNote());
         maintenanceRequestRepository.persist(maintenanceRequestDb);
 
         return maintenanceMapper.toDto(maintenanceRequestDb);

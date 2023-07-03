@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS maintenance_request (
   property_id bigint NOT NULL,
   category_id smallint NOT NULL,
   description varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  note varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   status varchar(15) NOT NULL DEFAULT 'IN_PROGRESS',
   completed_at datetime DEFAULT NULL,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

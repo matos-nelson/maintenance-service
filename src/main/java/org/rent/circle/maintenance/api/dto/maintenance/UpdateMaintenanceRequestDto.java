@@ -18,6 +18,8 @@ public class UpdateMaintenanceRequestDto {
     @NotNull
     private Long maintenanceRequestId;
 
+    private String note;
+
     @NotNull
     private Status status;
 }

@@ -10,5 +10,5 @@ INSERT INTO category(id, name) values (9, 'Pest Control');
 INSERT INTO category(id, name) values (10, 'Plumbing/Leaks');
 INSERT INTO category(id, name) values (11, 'Windows');
 
-INSERT INTO maintenance_request(id, owner_id, resident_id, property_id, category_id, description, status) values (100, 1, 1, 1, 1, 'Windows', 'IN_PROGRESS');
-INSERT INTO maintenance_request(id, owner_id, resident_id, property_id, category_id, description, status) values (200, 2, 2, 2, 2, 'Windows', 'COMPLETED');
+INSERT INTO maintenance_request(id, owner_id, resident_id, property_id, category_id, description, note, status) values (100, 1, 1, 1, 1, 'Windows', '1 Note', 'IN_PROGRESS');
+INSERT INTO maintenance_request(id, owner_id, resident_id, property_id, category_id, description, note, status) values (200, 2, 2, 2, 2, 'Windows', '2 Note', 'COMPLETED');
