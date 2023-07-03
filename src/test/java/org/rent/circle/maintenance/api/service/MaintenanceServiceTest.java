@@ -185,10 +185,11 @@ public class MaintenanceServiceTest {
     public void getRequest_WhenMaintenanceWithGivenIsNotFound_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(null);
+        Long ownerId = 2L;
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId)).thenReturn(null);
 
         // Act
-        MaintenanceRequestDto result = maintenanceService.getRequest(maintenanceRequestId);
+        MaintenanceRequestDto result = maintenanceService.getRequest(maintenanceRequestId, ownerId);
 
         // Assert
         assertNull(result);
@@ -198,15 +199,16 @@ public class MaintenanceServiceTest {
     public void getRequest_WhenMaintenanceWithGivenIsFound_ShouldReturnMaintenanceRequest() {
         // Arrange
         Long maintenanceRequestId = 1L;
-
+        Long ownerId = 2L;
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
         maintenanceRequest.setId(maintenanceRequestId);
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(null);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(new MaintenanceRequest());
         when(maintenanceMapper.toDto(maintenanceRequest)).thenReturn(new MaintenanceRequestDto());
 
         // Act
-        MaintenanceRequestDto result = maintenanceService.getRequest(maintenanceRequestId);
+        MaintenanceRequestDto result = maintenanceService.getRequest(maintenanceRequestId, ownerId);
 
         // Assert
         assertNull(result);

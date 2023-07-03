@@ -37,7 +37,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(saveMaintenanceRequestDto)
             .when()
-            .post("/request")
+            .post()
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body(is("1"));
@@ -60,7 +60,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(saveMaintenanceRequestDto)
             .when()
-            .post("request")
+            .post()
             .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
@@ -80,7 +80,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch("/request")
+            .patch()
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -100,7 +100,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch("/request")
+            .patch()
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -120,7 +120,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch("/request")
+            .patch()
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body("ownerId", is(1),
@@ -141,7 +141,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/request/123")
+            .get("/123/owner/1")
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -154,7 +154,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/request/100")
+            .get("/100/owner/1")
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body("ownerId", is(1),

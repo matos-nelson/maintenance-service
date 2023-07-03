@@ -69,8 +69,9 @@ public class MaintenanceService {
         return maintenanceMapper.toDto(maintenanceRequestDb);
     }
 
-    public MaintenanceRequestDto getRequest(Long maintenanceRequestId) {
-        MaintenanceRequest maintenanceRequest = maintenanceRequestRepository.findById(maintenanceRequestId);
+    public MaintenanceRequestDto getRequest(Long maintenanceRequestId, Long ownerId) {
+        MaintenanceRequest maintenanceRequest = maintenanceRequestRepository
+            .findByIdAndOwnerId(maintenanceRequestId, ownerId);
         return maintenanceMapper.toDto(maintenanceRequest);
     }
 }

@@ -17,7 +17,7 @@ import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestD
 import org.rent.circle.maintenance.api.service.MaintenanceService;
 
 @AllArgsConstructor
-@Path("/maintenance")
+@Path("/maintenance/request")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Slf4j
@@ -26,21 +26,20 @@ public class MaintenanceResource {
     private final MaintenanceService maintenanceService;
 
     @POST
-    @Path("/request")
     public Long saveMaintenanceRequest(@Valid SaveMaintenanceRequestDto saveMaintenanceRequestDto) {
         return maintenanceService.saveRequest(saveMaintenanceRequestDto);
     }
 
     @PATCH
-    @Path("/request")
     public MaintenanceRequestDto updateMaintenanceRequest(
         @Valid UpdateMaintenanceRequestDto updateMaintenanceRequestDto) {
         return maintenanceService.updateRequest(updateMaintenanceRequestDto);
     }
 
     @GET
-    @Path("/request/{id}")
-    public MaintenanceRequestDto getMaintenanceRequest(@PathParam("id") Long maintenanceRequestId) {
-        return maintenanceService.getRequest(maintenanceRequestId);
+    @Path("/{id}/owner/{ownerId}")
+    public MaintenanceRequestDto getMaintenanceRequest(@PathParam("id") Long maintenanceRequestId,
+        @PathParam("ownerId") Long ownerId) {
+        return maintenanceService.getRequest(maintenanceRequestId, ownerId);
     }
 }
