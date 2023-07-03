@@ -8,5 +8,7 @@ import org.rent.circle.maintenance.api.persistence.model.Category;
 @Mapper(componentModel = "cdi")
 public interface CategoryMapper {
 
+    CategoryDto toDto(Category category);
+
     List<CategoryDto> toDtoList(List<Category> categories);
 }
