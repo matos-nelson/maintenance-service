@@ -90,8 +90,10 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenGivenAStatus_ShouldUpdateStatus() {
         // Arrange
         Long maintenanceRequestId = 1L;
+        Long ownerId = 1L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .ownerId(ownerId)
             .status(Status.REJECTED)
             .build();
 
@@ -99,7 +101,8 @@ public class MaintenanceServiceTest {
         maintenanceRequest.setId(maintenanceRequestId);
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(maintenanceRequest);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(maintenanceRequest);
         when(maintenanceMapper.toDto(Mockito.any())).thenReturn(new MaintenanceRequestDto());
 
         // Act
@@ -116,8 +119,10 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenMaintenanceRequestIsNotUpdatable_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
+        Long ownerId = 2L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .ownerId(ownerId)
             .status(Status.COMPLETED)
             .build();
 
@@ -125,7 +130,8 @@ public class MaintenanceServiceTest {
         maintenanceRequest.setId(maintenanceRequestId);
         maintenanceRequest.setStatus(Status.COMPLETED.value);
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(maintenanceRequest);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(maintenanceRequest);
 
         // Act
         MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto);
@@ -139,8 +145,10 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenGivenACompletedStatus_ShouldPopulateCompletedAt() {
         // Arrange
         Long maintenanceRequestId = 1L;
+        Long ownerId = 2L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .ownerId(ownerId)
             .note("Completed Request")
             .status(Status.COMPLETED)
             .build();
@@ -149,7 +157,8 @@ public class MaintenanceServiceTest {
         maintenanceRequest.setId(maintenanceRequestId);
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(maintenanceRequest);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(maintenanceRequest);
         when(maintenanceMapper.toDto(Mockito.any())).thenReturn(new MaintenanceRequestDto());
 
         // Act
@@ -167,12 +176,15 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenGivenMaintenanceIdIsNotFound_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
+        Long ownerId = 2L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .ownerId(ownerId)
             .status(Status.COMPLETED)
             .build();
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(null);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(null);
 
         // Act
         assertDoesNotThrow(() -> {
