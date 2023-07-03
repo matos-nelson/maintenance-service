@@ -4,12 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
 import jakarta.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
@@ -161,7 +164,7 @@ public class MaintenanceServiceTest {
     }
 
     @Test
-    public void updateRequest_WhenGivenMaintenanceIsNotFound_ShouldReturnNull() {
+    public void updateRequest_WhenGivenMaintenanceIdIsNotFound_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
@@ -182,7 +185,7 @@ public class MaintenanceServiceTest {
     }
 
     @Test
-    public void getRequest_WhenMaintenanceWithGivenIsNotFound_ShouldReturnNull() {
+    public void getRequest_WhenMaintenanceWithGivenIdsAreNotFound_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
         Long ownerId = 2L;
@@ -196,7 +199,7 @@ public class MaintenanceServiceTest {
     }
 
     @Test
-    public void getRequest_WhenMaintenanceWithGivenIsFound_ShouldReturnMaintenanceRequest() {
+    public void getRequest_WhenMaintenanceWithGivenIdsAreFound_ShouldReturnMaintenanceRequest() {
         // Arrange
         Long maintenanceRequestId = 1L;
         Long ownerId = 2L;
@@ -212,5 +215,41 @@ public class MaintenanceServiceTest {
 
         // Assert
         assertNull(result);
+    }
+
+    @Test
+    public void getRequests_WhenMaintenanceWithGivenIdsAreNotFound_ShouldReturnEmptyList() {
+        // Arrange
+        Long ownerId = 1L;
+        int page = 2;
+        int pageSize = 10;
+
+        when(maintenanceRequestRepository.findMaintenanceRequests(ownerId, page, pageSize)).thenReturn(null);
+
+        // Act
+        List<MaintenanceRequestDto> result = maintenanceService.getRequests(ownerId, page, pageSize);
+
+        // Assert
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void getRequests_WhenMaintenanceWithGivenIdsAreFound_ShouldReturnList() {
+        // Arrange
+        Long ownerId = 1L;
+        int page = 2;
+        int pageSize = 10;
+        List<MaintenanceRequest> maintenanceRequests = Collections.singletonList(new MaintenanceRequest());
+        when(maintenanceRequestRepository.findMaintenanceRequests(ownerId, page, pageSize)).thenReturn(
+            maintenanceRequests);
+        when(maintenanceMapper.toDtoList(maintenanceRequests)).thenReturn(
+            Collections.singletonList(new MaintenanceRequestDto()));
+
+        // Act
+        List<MaintenanceRequestDto> result = maintenanceService.getRequests(ownerId, page, pageSize);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
     }
 }

@@ -3,6 +3,7 @@ package org.rent.circle.maintenance.api.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
@@ -73,5 +74,11 @@ public class MaintenanceService {
         MaintenanceRequest maintenanceRequest = maintenanceRequestRepository
             .findByIdAndOwnerId(maintenanceRequestId, ownerId);
         return maintenanceMapper.toDto(maintenanceRequest);
+    }
+
+    public List<MaintenanceRequestDto> getRequests(Long ownerId, int page, int pageSize) {
+        List<MaintenanceRequest> maintenanceRequests = maintenanceRequestRepository
+            .findMaintenanceRequests(ownerId, page, pageSize);
+        return maintenanceMapper.toDtoList(maintenanceRequests);
     }
 }
