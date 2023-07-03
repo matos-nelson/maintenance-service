@@ -4,13 +4,18 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.common.mapper.TypeRef;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.enums.Status;
@@ -165,5 +170,60 @@ public class MaintenanceResourceTest {
                 "completedAt", is(nullValue()),
                 "category.id", is(1),
                 "category.name", is("Appliance"));
+    }
+
+    @Test
+    public void GET_getMaintenanceRequests_WhenRequestsCantBeFound_ShouldReturnNoRequests() {
+        // Arrange
+
+        // Act
+        // Assert
+        given()
+            .when()
+            .get("/owner/999?page=0&pageSize=10")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .body(is("[]"));
+    }
+
+    @Test
+    public void GET_getMaintenanceRequests_WhenRequestsAreFound_ShouldReturnRequests() {
+        // Arrange
+
+        // Act
+        List<MaintenanceRequestDto> result = given()
+            .when()
+            .get("/owner/2?page=0&pageSize=10")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .extract()
+            .body()
+            .as(new TypeRef<>() {
+            });
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(2L, result.get(0).getOwnerId());
+        assertEquals(2L, result.get(0).getResidentId());
+        assertEquals(2L, result.get(0).getPropertyId());
+        assertEquals(2L, result.get(0).getCategory().getId());
+        assertEquals("Doors/Keys", result.get(0).getCategory().getName());
+        assertEquals("Windows", result.get(0).getDescription());
+        assertEquals("2 Note", result.get(0).getNote());
+        assertEquals("COMPLETED", result.get(0).getStatus());
+    }
+
+    @Test
+    public void GET_getProperties_WhenFailsValidation_ShouldReturnBadRequest() {
+        // Arrange
+
+        // Act
+        // Assert
+        given()
+            .when()
+            .get("/owner/123?page=0")
+            .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 }
