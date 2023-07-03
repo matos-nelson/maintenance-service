@@ -19,6 +19,33 @@ public class CategoryMapperTest {
     CategoryMapper categoryMapper;
 
     @Test
+    public void toDto_WhenGivenNull_ShouldReturnNull() {
+        // Arrange
+
+        // Act
+        CategoryDto result = categoryMapper.toDto(null);
+
+        // Assert
+        assertNull(result);
+    }
+
+    @Test
+    public void toDto_WhenGivenAValidCategory_ShouldReturnDto() {
+        // Arrange
+        Category category = new Category();
+        category.setId(1L);
+        category.setName("category");
+
+        // Act
+        CategoryDto result = categoryMapper.toDto(category);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(category.getId(), result.getId());
+        assertEquals(category.getName(), result.getName());
+    }
+
+    @Test
     public void toDtoList_WhenGivenNull_ShouldReturnNull() {
         // Arrange
 

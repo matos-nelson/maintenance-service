@@ -2,9 +2,12 @@ package org.rent.circle.maintenance.api.persistence.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -32,11 +35,15 @@ public class MaintenanceRequest extends BaseModel {
     @Column(name = "property_id")
     private Long propertyId;
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", updatable = false)
+    private Category category;
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "note")
+    private String note;
 
     @Column(name = "status")
     private String status;
