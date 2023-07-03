@@ -18,6 +18,9 @@ public class UpdateMaintenanceRequestDto {
     @NotNull
     private Long maintenanceRequestId;
 
+    @NotNull
+    private Long ownerId;
+
     private String note;
 
     @NotNull

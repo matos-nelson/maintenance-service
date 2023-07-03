@@ -1,5 +1,6 @@
 package org.rent.circle.maintenance.api.service.mapper;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
@@ -11,4 +12,6 @@ public interface MaintenanceMapper {
     MaintenanceRequest toModel(SaveMaintenanceRequestDto saveMaintenanceRequestDto);
 
     MaintenanceRequestDto toDto(MaintenanceRequest maintenanceRequest);
+
+    List<MaintenanceRequestDto> toDtoList(List<MaintenanceRequest> maintenanceRequests);
 }

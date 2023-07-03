@@ -3,13 +3,19 @@ package org.rent.circle.maintenance.api.resource;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.common.mapper.TypeRef;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.enums.Status;
@@ -36,7 +42,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(saveMaintenanceRequestDto)
             .when()
-            .post("/request")
+            .post()
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body(is("1"));
@@ -59,7 +65,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(saveMaintenanceRequestDto)
             .when()
-            .post("request")
+            .post()
             .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
@@ -70,6 +76,7 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(1000L)
+            .ownerId(1L)
             .status(Status.COMPLETED)
             .build();
 
@@ -79,7 +86,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch("/request")
+            .patch()
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -90,6 +97,7 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(200L)
+            .ownerId(2L)
             .status(Status.COMPLETED)
             .build();
 
@@ -99,7 +107,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch("/request")
+            .patch()
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -110,6 +118,7 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(100L)
+            .ownerId(1L)
             .status(Status.COMPLETED)
             .build();
 
@@ -119,7 +128,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch("/request")
+            .patch()
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body("ownerId", is(1),
@@ -130,5 +139,94 @@ public class MaintenanceResourceTest {
                 "completedAt", is(notNullValue()),
                 "category.id", is(1),
                 "category.name", is("Appliance"));
+    }
+
+    @Test
+    public void GET_WhenAMaintenanceRequestCantBeFound_ShouldReturnNoContent() {
+        // Arrange
+
+        // Act
+        // Assert
+        given()
+            .when()
+            .get("/123/owner/1")
+            .then()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    public void GET_WhenAMaintenanceRequestIsFound_ShouldReturnMaintenanceRequest() {
+        // Arrange
+
+        // Act
+        // Assert
+        given()
+            .when()
+            .get("/100/owner/1")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .body("ownerId", is(1),
+                "residentId", is(1),
+                "propertyId", is(1),
+                "description", is("Windows"),
+                "status", is("IN_PROGRESS"),
+                "completedAt", is(nullValue()),
+                "category.id", is(1),
+                "category.name", is("Appliance"));
+    }
+
+    @Test
+    public void GET_getMaintenanceRequests_WhenRequestsCantBeFound_ShouldReturnNoRequests() {
+        // Arrange
+
+        // Act
+        // Assert
+        given()
+            .when()
+            .get("/owner/999?page=0&pageSize=10")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .body(is("[]"));
+    }
+
+    @Test
+    public void GET_getMaintenanceRequests_WhenRequestsAreFound_ShouldReturnRequests() {
+        // Arrange
+
+        // Act
+        List<MaintenanceRequestDto> result = given()
+            .when()
+            .get("/owner/2?page=0&pageSize=10")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .extract()
+            .body()
+            .as(new TypeRef<>() {
+            });
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(2L, result.get(0).getOwnerId());
+        assertEquals(2L, result.get(0).getResidentId());
+        assertEquals(2L, result.get(0).getPropertyId());
+        assertEquals(2L, result.get(0).getCategory().getId());
+        assertEquals("Doors/Keys", result.get(0).getCategory().getName());
+        assertEquals("Windows", result.get(0).getDescription());
+        assertEquals("2 Note", result.get(0).getNote());
+        assertEquals("COMPLETED", result.get(0).getStatus());
+    }
+
+    @Test
+    public void GET_getProperties_WhenFailsValidation_ShouldReturnBadRequest() {
+        // Arrange
+
+        // Act
+        // Assert
+        given()
+            .when()
+            .get("/owner/123?page=0")
+            .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 }

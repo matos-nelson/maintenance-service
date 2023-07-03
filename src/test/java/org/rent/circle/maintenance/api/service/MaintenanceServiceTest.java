@@ -4,12 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
 import jakarta.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
@@ -87,8 +90,10 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenGivenAStatus_ShouldUpdateStatus() {
         // Arrange
         Long maintenanceRequestId = 1L;
+        Long ownerId = 1L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .ownerId(ownerId)
             .status(Status.REJECTED)
             .build();
 
@@ -96,7 +101,8 @@ public class MaintenanceServiceTest {
         maintenanceRequest.setId(maintenanceRequestId);
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(maintenanceRequest);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(maintenanceRequest);
         when(maintenanceMapper.toDto(Mockito.any())).thenReturn(new MaintenanceRequestDto());
 
         // Act
@@ -113,8 +119,10 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenMaintenanceRequestIsNotUpdatable_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
+        Long ownerId = 2L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .ownerId(ownerId)
             .status(Status.COMPLETED)
             .build();
 
@@ -122,7 +130,8 @@ public class MaintenanceServiceTest {
         maintenanceRequest.setId(maintenanceRequestId);
         maintenanceRequest.setStatus(Status.COMPLETED.value);
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(maintenanceRequest);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(maintenanceRequest);
 
         // Act
         MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto);
@@ -136,8 +145,10 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenGivenACompletedStatus_ShouldPopulateCompletedAt() {
         // Arrange
         Long maintenanceRequestId = 1L;
+        Long ownerId = 2L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .ownerId(ownerId)
             .note("Completed Request")
             .status(Status.COMPLETED)
             .build();
@@ -146,7 +157,8 @@ public class MaintenanceServiceTest {
         maintenanceRequest.setId(maintenanceRequestId);
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(maintenanceRequest);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(maintenanceRequest);
         when(maintenanceMapper.toDto(Mockito.any())).thenReturn(new MaintenanceRequestDto());
 
         // Act
@@ -161,15 +173,18 @@ public class MaintenanceServiceTest {
     }
 
     @Test
-    public void updateRequest_WhenGivenMaintenanceIsNotFound_ShouldReturnNull() {
+    public void updateRequest_WhenGivenMaintenanceIdIsNotFound_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
+        Long ownerId = 2L;
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
+            .ownerId(ownerId)
             .status(Status.COMPLETED)
             .build();
 
-        when(maintenanceRequestRepository.findById(maintenanceRequestId)).thenReturn(null);
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(null);
 
         // Act
         assertDoesNotThrow(() -> {
@@ -179,5 +194,74 @@ public class MaintenanceServiceTest {
 
         // Assert
         Mockito.verify(maintenanceRequestRepository, times(0)).persist((MaintenanceRequest) Mockito.any());
+    }
+
+    @Test
+    public void getRequest_WhenMaintenanceWithGivenIdsAreNotFound_ShouldReturnNull() {
+        // Arrange
+        Long maintenanceRequestId = 1L;
+        Long ownerId = 2L;
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId)).thenReturn(null);
+
+        // Act
+        MaintenanceRequestDto result = maintenanceService.getRequest(maintenanceRequestId, ownerId);
+
+        // Assert
+        assertNull(result);
+    }
+
+    @Test
+    public void getRequest_WhenMaintenanceWithGivenIdsAreFound_ShouldReturnMaintenanceRequest() {
+        // Arrange
+        Long maintenanceRequestId = 1L;
+        Long ownerId = 2L;
+        MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
+        maintenanceRequest.setId(maintenanceRequestId);
+
+        when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId))
+            .thenReturn(new MaintenanceRequest());
+        when(maintenanceMapper.toDto(maintenanceRequest)).thenReturn(new MaintenanceRequestDto());
+
+        // Act
+        MaintenanceRequestDto result = maintenanceService.getRequest(maintenanceRequestId, ownerId);
+
+        // Assert
+        assertNull(result);
+    }
+
+    @Test
+    public void getRequests_WhenMaintenanceWithGivenIdsAreNotFound_ShouldReturnEmptyList() {
+        // Arrange
+        Long ownerId = 1L;
+        int page = 2;
+        int pageSize = 10;
+
+        when(maintenanceRequestRepository.findMaintenanceRequests(ownerId, page, pageSize)).thenReturn(null);
+
+        // Act
+        List<MaintenanceRequestDto> result = maintenanceService.getRequests(ownerId, page, pageSize);
+
+        // Assert
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void getRequests_WhenMaintenanceWithGivenIdsAreFound_ShouldReturnList() {
+        // Arrange
+        Long ownerId = 1L;
+        int page = 2;
+        int pageSize = 10;
+        List<MaintenanceRequest> maintenanceRequests = Collections.singletonList(new MaintenanceRequest());
+        when(maintenanceRequestRepository.findMaintenanceRequests(ownerId, page, pageSize)).thenReturn(
+            maintenanceRequests);
+        when(maintenanceMapper.toDtoList(maintenanceRequests)).thenReturn(
+            Collections.singletonList(new MaintenanceRequestDto()));
+
+        // Act
+        List<MaintenanceRequestDto> result = maintenanceService.getRequests(ownerId, page, pageSize);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
     }
 }
