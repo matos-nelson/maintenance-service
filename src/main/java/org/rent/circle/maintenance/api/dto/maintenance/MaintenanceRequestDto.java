@@ -9,6 +9,7 @@ import org.rent.circle.maintenance.api.dto.category.CategoryDto;
 @Setter
 public class MaintenanceRequestDto {
 
+    private Long id;
     private Long ownerId;
     private Long residentId;
     private Long propertyId;
@@ -17,4 +18,5 @@ public class MaintenanceRequestDto {
     private String note;
     private String status;
     private LocalDateTime completedAt;
+    private LocalDateTime updatedAt;
 }

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -80,12 +81,14 @@ public class MaintenanceMapperTest {
         maintenanceRequest.setCategory(category);
         maintenanceRequest.setDescription("My Description");
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
+        maintenanceRequest.setUpdatedAt(LocalDateTime.now());
 
         // Act
         MaintenanceRequestDto result = maintenanceMapper.toDto(maintenanceRequest);
 
         // Assert
         assertNotNull(result);
+        assertEquals(maintenanceRequest.getId(), result.getId());
         assertEquals(maintenanceRequest.getOwnerId(), result.getOwnerId());
         assertEquals(maintenanceRequest.getResidentId(), result.getResidentId());
         assertEquals(maintenanceRequest.getPropertyId(), result.getPropertyId());
@@ -94,6 +97,7 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getStatus(), result.getStatus());
         assertEquals(maintenanceRequest.getCategory().getId(), result.getCategory().getId());
         assertEquals(maintenanceRequest.getCategory().getName(), result.getCategory().getName());
+        assertEquals(maintenanceRequest.getUpdatedAt(), result.getUpdatedAt());
     }
 
     @Test
@@ -122,6 +126,7 @@ public class MaintenanceMapperTest {
         maintenanceRequest.setCategory(category);
         maintenanceRequest.setDescription("My Description");
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
+        maintenanceRequest.setUpdatedAt(LocalDateTime.now());
 
         // Act
         List<MaintenanceRequestDto> result = maintenanceMapper.toDtoList(Collections.singletonList(maintenanceRequest));
@@ -129,6 +134,7 @@ public class MaintenanceMapperTest {
         // Assert
         assertNotNull(result);
         assertEquals(1, result.size());
+        assertEquals(maintenanceRequest.getId(), result.get(0).getId());
         assertEquals(maintenanceRequest.getOwnerId(), result.get(0).getOwnerId());
         assertEquals(maintenanceRequest.getResidentId(), result.get(0).getResidentId());
         assertEquals(maintenanceRequest.getPropertyId(), result.get(0).getPropertyId());
@@ -137,5 +143,6 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getStatus(), result.get(0).getStatus());
         assertEquals(maintenanceRequest.getCategory().getId(), result.get(0).getCategory().getId());
         assertEquals(maintenanceRequest.getCategory().getName(), result.get(0).getCategory().getName());
+        assertEquals(maintenanceRequest.getUpdatedAt(), result.get(0).getUpdatedAt());
     }
 }

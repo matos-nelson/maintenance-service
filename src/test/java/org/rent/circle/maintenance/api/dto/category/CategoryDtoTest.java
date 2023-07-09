@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class CategoryDtoTest {
 
     @Test
-    public void CategoryDtoDto_SettersAndGetters_ShouldWork() {
+    public void CategoryDto_SettersAndGetters_ShouldWork() {
         // Arrange
         BeanTester beanTester = new BeanTester();
 
