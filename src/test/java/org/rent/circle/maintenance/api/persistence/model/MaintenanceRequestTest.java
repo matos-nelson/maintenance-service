@@ -15,6 +15,8 @@ public class MaintenanceRequestTest {
         // Arrange
         BeanTester beanTester = new BeanTester();
         beanTester.addExcludedField("completedAt");
+        beanTester.addExcludedField("createdAt");
+        beanTester.addExcludedField("updatedAt");
 
         // Act
         beanTester.testBean(MaintenanceRequest.class);
@@ -28,8 +30,12 @@ public class MaintenanceRequestTest {
 
         // Act
         maintenanceRequest.setCompletedAt(LocalDateTime.now());
+        maintenanceRequest.setUpdatedAt(LocalDateTime.now());
+        maintenanceRequest.setCreatedAt(LocalDateTime.now());
 
         // Assert
         assertNotNull(maintenanceRequest.getCompletedAt());
+        assertNotNull(maintenanceRequest.getCreatedAt());
+        assertNotNull(maintenanceRequest.getUpdatedAt());
     }
 }
