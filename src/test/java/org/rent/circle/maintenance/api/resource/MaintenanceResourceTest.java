@@ -34,6 +34,7 @@ public class MaintenanceResourceTest {
             .propertyId(3L)
             .categoryId(4L)
             .description("description")
+            .instructions("instructions")
             .build();
 
         // Act
@@ -57,6 +58,7 @@ public class MaintenanceResourceTest {
             .propertyId(3L)
             .categoryId(4L)
             .description("description")
+            .instructions("instructions")
             .build();
 
         // Act
@@ -169,6 +171,7 @@ public class MaintenanceResourceTest {
                 "residentId", is(1),
                 "propertyId", is(1),
                 "description", is("Windows"),
+                "instructions", is("Instructions"),
                 "status", is("IN_PROGRESS"),
                 "completedAt", is(nullValue()),
                 "category.id", is(1),
@@ -213,12 +216,13 @@ public class MaintenanceResourceTest {
         assertEquals(2L, result.get(0).getCategory().getId());
         assertEquals("Doors/Keys", result.get(0).getCategory().getName());
         assertEquals("Windows", result.get(0).getDescription());
+        assertEquals("Instructions", result.get(0).getInstructions());
         assertEquals("2 Note", result.get(0).getNote());
         assertEquals("COMPLETED", result.get(0).getStatus());
     }
 
     @Test
-    public void GET_getProperties_WhenFailsValidation_ShouldReturnBadRequest() {
+    public void GET_getMaintenanceRequests_WhenFailsValidation_ShouldReturnBadRequest() {
         // Arrange
 
         // Act

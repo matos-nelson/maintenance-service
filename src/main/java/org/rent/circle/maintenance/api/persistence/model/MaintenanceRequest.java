@@ -45,6 +45,9 @@ public class MaintenanceRequest extends BaseModel {
     @Column(name = "note")
     private String note;
 
+    @Column(name = "instructions")
+    private String instructions;
+
     @Column(name = "status")
     private String status;
 

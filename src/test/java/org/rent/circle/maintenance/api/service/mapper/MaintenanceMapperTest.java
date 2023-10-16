@@ -42,6 +42,7 @@ public class MaintenanceMapperTest {
             .propertyId(3L)
             .categoryId(4L)
             .description("description")
+            .instructions("instructions")
             .build();
 
         // Act
@@ -53,6 +54,7 @@ public class MaintenanceMapperTest {
         assertEquals(saveMaintenanceRequestDto.getResidentId(), result.getResidentId());
         assertEquals(saveMaintenanceRequestDto.getPropertyId(), result.getPropertyId());
         assertEquals(saveMaintenanceRequestDto.getDescription(), result.getDescription());
+        assertEquals(saveMaintenanceRequestDto.getInstructions(), result.getInstructions());
     }
 
     @Test
@@ -80,6 +82,7 @@ public class MaintenanceMapperTest {
         maintenanceRequest.setPropertyId(4L);
         maintenanceRequest.setCategory(category);
         maintenanceRequest.setDescription("My Description");
+        maintenanceRequest.setInstructions("My Instructions");
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
         maintenanceRequest.setUpdatedAt(LocalDateTime.now());
 
@@ -93,6 +96,7 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getResidentId(), result.getResidentId());
         assertEquals(maintenanceRequest.getPropertyId(), result.getPropertyId());
         assertEquals(maintenanceRequest.getDescription(), result.getDescription());
+        assertEquals(maintenanceRequest.getInstructions(), result.getInstructions());
         assertEquals(maintenanceRequest.getNote(), result.getNote());
         assertEquals(maintenanceRequest.getStatus(), result.getStatus());
         assertEquals(maintenanceRequest.getCategory().getId(), result.getCategory().getId());
@@ -125,6 +129,7 @@ public class MaintenanceMapperTest {
         maintenanceRequest.setPropertyId(4L);
         maintenanceRequest.setCategory(category);
         maintenanceRequest.setDescription("My Description");
+        maintenanceRequest.setInstructions("My Instructions");
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
         maintenanceRequest.setUpdatedAt(LocalDateTime.now());
 
@@ -139,6 +144,7 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getResidentId(), result.get(0).getResidentId());
         assertEquals(maintenanceRequest.getPropertyId(), result.get(0).getPropertyId());
         assertEquals(maintenanceRequest.getDescription(), result.get(0).getDescription());
+        assertEquals(maintenanceRequest.getInstructions(), result.get(0).getInstructions());
         assertEquals(maintenanceRequest.getNote(), result.get(0).getNote());
         assertEquals(maintenanceRequest.getStatus(), result.get(0).getStatus());
         assertEquals(maintenanceRequest.getCategory().getId(), result.get(0).getCategory().getId());
