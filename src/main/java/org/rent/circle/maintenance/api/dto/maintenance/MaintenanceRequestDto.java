@@ -16,6 +16,7 @@ public class MaintenanceRequestDto {
     private CategoryDto category;
     private String description;
     private String note;
+    private String instructions;
     private String status;
     private LocalDateTime completedAt;
     private LocalDateTime updatedAt;
