@@ -17,7 +17,7 @@ import lombok.Setter;
 public class SaveMaintenanceRequestDto {
 
     @NotBlank
-    private String ownerId;
+    private String managerId;
 
     @NotNull
     private Long residentId;

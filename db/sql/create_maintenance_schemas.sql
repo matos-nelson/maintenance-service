@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS maintenance_request (
   id bigint PRIMARY KEY AUTO_INCREMENT,
-  owner_id varchar(255) NOT NULL,
+  manager_id varchar(255) NOT NULL,
   resident_id bigint NOT NULL,
   property_id bigint NOT NULL,
   category_id smallint NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS maintenance_request (
   completed_at datetime DEFAULT NULL,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  KEY owner_id_idx (owner_id),
+  KEY manager_id_idx (manager_id),
   KEY resident_id_idx (resident_id),
   KEY property_id_idx (property_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

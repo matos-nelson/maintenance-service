@@ -20,7 +20,7 @@ public class UpdateMaintenanceRequestDto {
     private Long maintenanceRequestId;
 
     @NotBlank
-    private String ownerId;
+    private String managerId;
 
     private String note;
 

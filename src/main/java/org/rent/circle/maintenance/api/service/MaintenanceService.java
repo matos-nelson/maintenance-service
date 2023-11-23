@@ -45,8 +45,8 @@ public class MaintenanceService {
 
     @Transactional
     public MaintenanceRequestDto updateRequest(UpdateMaintenanceRequestDto updateRequest) {
-        MaintenanceRequest maintenanceRequestDb = maintenanceRequestRepository.findByIdAndOwnerId(
-            updateRequest.getMaintenanceRequestId(), updateRequest.getOwnerId());
+        MaintenanceRequest maintenanceRequestDb = maintenanceRequestRepository.findByIdAndManagerId(
+            updateRequest.getMaintenanceRequestId(), updateRequest.getManagerId());
 
         if (maintenanceRequestDb == null) {
             log.info("Could Not Find Maintenance Request With Given Id: {}", updateRequest.getMaintenanceRequestId());
@@ -70,15 +70,15 @@ public class MaintenanceService {
         return maintenanceMapper.toDto(maintenanceRequestDb);
     }
 
-    public MaintenanceRequestDto getRequest(Long maintenanceRequestId, String ownerId) {
+    public MaintenanceRequestDto getRequest(Long maintenanceRequestId, String managerId) {
         MaintenanceRequest maintenanceRequest = maintenanceRequestRepository
-            .findByIdAndOwnerId(maintenanceRequestId, ownerId);
+            .findByIdAndManagerId(maintenanceRequestId, managerId);
         return maintenanceMapper.toDto(maintenanceRequest);
     }
 
-    public List<MaintenanceRequestDto> getRequests(String ownerId, int page, int pageSize) {
+    public List<MaintenanceRequestDto> getRequests(String managerId, int page, int pageSize) {
         List<MaintenanceRequest> maintenanceRequests = maintenanceRequestRepository
-            .findMaintenanceRequests(ownerId, page, pageSize);
+            .findMaintenanceRequests(managerId, page, pageSize);
         return maintenanceMapper.toDtoList(maintenanceRequests);
     }
 }

@@ -23,11 +23,11 @@ public class MaintenanceRepositoryTest {
 
     @Test
     @TestTransaction
-    public void findByIdAndOwnerId_WhenMaintenanceRequestDoesNotExist_ShouldReturnNull() {
+    public void findByIdAndManagerId_WhenMaintenanceRequestDoesNotExist_ShouldReturnNull() {
         // Arrange
 
         // Act
-        MaintenanceRequest result = maintenanceRequestRepository.findByIdAndOwnerId(123L, "456");
+        MaintenanceRequest result = maintenanceRequestRepository.findByIdAndManagerId(123L, "456");
 
         // Assert
         assertNull(result);
@@ -35,11 +35,11 @@ public class MaintenanceRepositoryTest {
 
     @Test
     @TestTransaction
-    public void findByIdAndOwnerId_WhenCalled_ShouldReturnMaintenanceRequest() {
+    public void findByIdAndManagerId_WhenCalled_ShouldReturnMaintenanceRequest() {
         // Arrange
 
         // Act
-        MaintenanceRequest result = maintenanceRequestRepository.findByIdAndOwnerId(200L, "1");
+        MaintenanceRequest result = maintenanceRequestRepository.findByIdAndManagerId(200L, "1");
 
         // Assert
         assertNull(result);
