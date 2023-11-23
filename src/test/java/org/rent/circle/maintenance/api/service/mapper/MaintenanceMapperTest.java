@@ -37,7 +37,7 @@ public class MaintenanceMapperTest {
     public void toModel_WhenGivenASaveMaintenanceRequestDto_ShouldMap() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .ownerId(1L)
+            .ownerId("1")
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -77,7 +77,7 @@ public class MaintenanceMapperTest {
 
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
         maintenanceRequest.setId(1L);
-        maintenanceRequest.setOwnerId(2L);
+        maintenanceRequest.setOwnerId("2");
         maintenanceRequest.setResidentId(3L);
         maintenanceRequest.setPropertyId(4L);
         maintenanceRequest.setCategory(category);
@@ -124,7 +124,7 @@ public class MaintenanceMapperTest {
 
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
         maintenanceRequest.setId(1L);
-        maintenanceRequest.setOwnerId(2L);
+        maintenanceRequest.setOwnerId("2");
         maintenanceRequest.setResidentId(3L);
         maintenanceRequest.setPropertyId(4L);
         maintenanceRequest.setCategory(category);

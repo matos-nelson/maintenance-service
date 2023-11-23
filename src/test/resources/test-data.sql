@@ -11,7 +11,7 @@ INSERT INTO category(id, name) values (10, 'Plumbing/Leaks');
 INSERT INTO category(id, name) values (11, 'Windows');
 
 INSERT INTO maintenance_request(id, owner_id, resident_id, property_id, category_id, description, note, instructions, status)
-values (100, 1, 1, 1, 1, 'Windows', '1 Note', 'Instructions', 'IN_PROGRESS');
+values (100, '1', 1, 1, 1, 'Windows', '1 Note', 'Instructions', 'IN_PROGRESS');
 
 INSERT INTO maintenance_request(id, owner_id, resident_id, property_id, category_id, description, note, instructions, status)
- values (200, 2, 2, 2, 2, 'Windows', '2 Note', 'Instructions', 'COMPLETED');
+ values (200, '2', 2, 2, 2, 'Windows', '2 Note', 'Instructions', 'COMPLETED');

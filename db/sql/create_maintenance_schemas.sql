@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS maintenance_request (
   id bigint PRIMARY KEY AUTO_INCREMENT,
-  owner_id bigint NOT NULL,
+  owner_id varchar(255) NOT NULL,
   resident_id bigint NOT NULL,
   property_id bigint NOT NULL,
   category_id smallint NOT NULL,

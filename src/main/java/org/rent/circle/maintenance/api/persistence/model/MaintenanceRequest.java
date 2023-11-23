@@ -27,7 +27,7 @@ public class MaintenanceRequest extends BaseModel {
     private Long id;
 
     @Column(name = "owner_id")
-    private Long ownerId;
+    private String ownerId;
 
     @Column(name = "resident_id")
     private Long residentId;

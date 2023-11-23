@@ -70,13 +70,13 @@ public class MaintenanceService {
         return maintenanceMapper.toDto(maintenanceRequestDb);
     }
 
-    public MaintenanceRequestDto getRequest(Long maintenanceRequestId, Long ownerId) {
+    public MaintenanceRequestDto getRequest(Long maintenanceRequestId, String ownerId) {
         MaintenanceRequest maintenanceRequest = maintenanceRequestRepository
             .findByIdAndOwnerId(maintenanceRequestId, ownerId);
         return maintenanceMapper.toDto(maintenanceRequest);
     }
 
-    public List<MaintenanceRequestDto> getRequests(Long ownerId, int page, int pageSize) {
+    public List<MaintenanceRequestDto> getRequests(String ownerId, int page, int pageSize) {
         List<MaintenanceRequest> maintenanceRequests = maintenanceRequestRepository
             .findMaintenanceRequests(ownerId, page, pageSize);
         return maintenanceMapper.toDtoList(maintenanceRequests);

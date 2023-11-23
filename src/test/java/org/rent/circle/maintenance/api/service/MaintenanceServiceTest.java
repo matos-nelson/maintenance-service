@@ -44,7 +44,7 @@ public class MaintenanceServiceTest {
     public void saveRequest_WhenGivenCategoryCantBeFound_ShouldReturnNull() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .ownerId(1L)
+            .ownerId("1")
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -64,7 +64,7 @@ public class MaintenanceServiceTest {
     public void saveRequest_WhenCalled_ShouldReturnRequestId() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .ownerId(1L)
+            .ownerId("1")
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -90,7 +90,7 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenGivenAStatus_ShouldUpdateStatus() {
         // Arrange
         Long maintenanceRequestId = 1L;
-        Long ownerId = 1L;
+        String ownerId = "1";
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
             .ownerId(ownerId)
@@ -119,7 +119,7 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenMaintenanceRequestIsNotUpdatable_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
-        Long ownerId = 2L;
+        String ownerId = "2";
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
             .ownerId(ownerId)
@@ -145,7 +145,7 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenGivenACompletedStatus_ShouldPopulateCompletedAt() {
         // Arrange
         Long maintenanceRequestId = 1L;
-        Long ownerId = 2L;
+        String ownerId = "2";
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
             .ownerId(ownerId)
@@ -176,7 +176,7 @@ public class MaintenanceServiceTest {
     public void updateRequest_WhenGivenMaintenanceIdIsNotFound_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
-        Long ownerId = 2L;
+        String ownerId = "2";
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
             .ownerId(ownerId)
@@ -200,7 +200,7 @@ public class MaintenanceServiceTest {
     public void getRequest_WhenMaintenanceWithGivenIdsAreNotFound_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
-        Long ownerId = 2L;
+        String ownerId = "2";
         when(maintenanceRequestRepository.findByIdAndOwnerId(maintenanceRequestId, ownerId)).thenReturn(null);
 
         // Act
@@ -214,7 +214,7 @@ public class MaintenanceServiceTest {
     public void getRequest_WhenMaintenanceWithGivenIdsAreFound_ShouldReturnMaintenanceRequest() {
         // Arrange
         Long maintenanceRequestId = 1L;
-        Long ownerId = 2L;
+        String ownerId = "2";
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
         maintenanceRequest.setId(maintenanceRequestId);
 
@@ -232,7 +232,7 @@ public class MaintenanceServiceTest {
     @Test
     public void getRequests_WhenMaintenanceWithGivenIdsAreNotFound_ShouldReturnEmptyList() {
         // Arrange
-        Long ownerId = 1L;
+        String ownerId = "1";
         int page = 2;
         int pageSize = 10;
 
@@ -248,7 +248,7 @@ public class MaintenanceServiceTest {
     @Test
     public void getRequests_WhenMaintenanceWithGivenIdsAreFound_ShouldReturnList() {
         // Arrange
-        Long ownerId = 1L;
+        String ownerId = "1";
         int page = 2;
         int pageSize = 10;
         List<MaintenanceRequest> maintenanceRequests = Collections.singletonList(new MaintenanceRequest());
