@@ -1,5 +1,6 @@
 package org.rent.circle.maintenance.api.dto.maintenance;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -15,8 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SaveMaintenanceRequestDto {
 
-    @NotNull
-    private Long ownerId;
+    @NotBlank
+    private String managerId;
 
     @NotNull
     private Long residentId;

@@ -41,17 +41,17 @@ public class MaintenanceResource {
     }
 
     @GET
-    @Path("/{id}/owner/{ownerId}")
+    @Path("/{id}/manager/{managerId}")
     public MaintenanceRequestDto getMaintenanceRequest(@PathParam("id") Long maintenanceRequestId,
-        @PathParam("ownerId") Long ownerId) {
-        return maintenanceService.getRequest(maintenanceRequestId, ownerId);
+        @PathParam("managerId") String managerId) {
+        return maintenanceService.getRequest(maintenanceRequestId, managerId);
     }
 
     @GET
-    @Path("/owner/{ownerId}")
-    public List<MaintenanceRequestDto> getMaintenanceRequests(@PathParam("ownerId") Long ownerId,
+    @Path("/manager/{managerId}")
+    public List<MaintenanceRequestDto> getMaintenanceRequests(@PathParam("managerId") String managerId,
         @QueryParam("page") @NotNull @Min(0) Integer page,
         @QueryParam("pageSize") @NotNull @Min(1) Integer pageSize) {
-        return maintenanceService.getRequests(ownerId, page, pageSize);
+        return maintenanceService.getRequests(managerId, page, pageSize);
     }
 }

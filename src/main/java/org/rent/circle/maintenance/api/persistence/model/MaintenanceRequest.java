@@ -26,8 +26,8 @@ public class MaintenanceRequest extends BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "owner_id")
-    private Long ownerId;
+    @Column(name = "manager_id")
+    private String managerId;
 
     @Column(name = "resident_id")
     private Long residentId;

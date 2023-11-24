@@ -29,7 +29,7 @@ public class MaintenanceResourceTest {
     public void Post_WhenGivenAValidRequestToSave_ShouldReturnSavedRequestId() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .ownerId(1L)
+            .managerId("1")
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -53,7 +53,7 @@ public class MaintenanceResourceTest {
     public void Post_WhenGivenAnInValidRequestToSave_ShouldReturnBadRequest() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .ownerId(null)
+            .managerId(null)
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -78,7 +78,7 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(1000L)
-            .ownerId(1L)
+            .managerId("1")
             .status(Status.COMPLETED)
             .build();
 
@@ -99,7 +99,7 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(200L)
-            .ownerId(2L)
+            .managerId("2")
             .status(Status.COMPLETED)
             .build();
 
@@ -120,7 +120,7 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(100L)
-            .ownerId(1L)
+            .managerId("1")
             .status(Status.COMPLETED)
             .build();
 
@@ -133,7 +133,7 @@ public class MaintenanceResourceTest {
             .patch()
             .then()
             .statusCode(HttpStatus.SC_OK)
-            .body("ownerId", is(1),
+            .body("managerId", is("1"),
                 "residentId", is(1),
                 "propertyId", is(1),
                 "description", is("Windows"),
@@ -151,7 +151,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/123/owner/1")
+            .get("/123/manager/1")
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -164,10 +164,10 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/100/owner/1")
+            .get("/100/manager/1")
             .then()
             .statusCode(HttpStatus.SC_OK)
-            .body("ownerId", is(1),
+            .body("managerId", is("1"),
                 "residentId", is(1),
                 "propertyId", is(1),
                 "description", is("Windows"),
@@ -186,7 +186,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/owner/999?page=0&pageSize=10")
+            .get("/manager/999?page=0&pageSize=10")
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body(is("[]"));
@@ -199,7 +199,7 @@ public class MaintenanceResourceTest {
         // Act
         List<MaintenanceRequestDto> result = given()
             .when()
-            .get("/owner/2?page=0&pageSize=10")
+            .get("/manager/2?page=0&pageSize=10")
             .then()
             .statusCode(HttpStatus.SC_OK)
             .extract()
@@ -210,7 +210,7 @@ public class MaintenanceResourceTest {
         // Assert
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals(2L, result.get(0).getOwnerId());
+        assertEquals("2", result.get(0).getManagerId());
         assertEquals(2L, result.get(0).getResidentId());
         assertEquals(2L, result.get(0).getPropertyId());
         assertEquals(2L, result.get(0).getCategory().getId());
@@ -229,7 +229,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/owner/123?page=0")
+            .get("/manager/123?page=0")
             .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
