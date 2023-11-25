@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import static org.mockito.Mockito.when;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import jakarta.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -196,6 +198,18 @@ public class MaintenanceServiceTest {
         Mockito.verify(maintenanceRequestRepository, times(0)).persist((MaintenanceRequest) Mockito.any());
     }
 
+
+    @Test
+    public void getRequest_WhenGivenManagerIdIsInvalid_ShouldReturnThrowException() {
+        // Arrange
+
+        // Act
+        // Assert
+        assertThrows(ConstraintViolationException.class, () ->
+            maintenanceService.getRequest(100L, null)
+        );
+    }
+
     @Test
     public void getRequest_WhenMaintenanceWithGivenIdsAreNotFound_ShouldReturnNull() {
         // Arrange
@@ -227,6 +241,17 @@ public class MaintenanceServiceTest {
 
         // Assert
         assertNull(result);
+    }
+
+    @Test
+    public void getRequests_WhenGivenManagerIdIsInvalid_ShouldReturnThrowException() {
+        // Arrange
+
+        // Act
+        // Assert
+        assertThrows(ConstraintViolationException.class, () ->
+            maintenanceService.getRequests(null, 0, 10)
+        );
     }
 
     @Test

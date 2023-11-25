@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
@@ -30,6 +31,7 @@ import org.rent.circle.maintenance.api.service.MaintenanceService;
 public class MaintenanceResource {
 
     private final MaintenanceService maintenanceService;
+    private final JsonWebToken jwt;
 
     @POST
     public Long saveMaintenanceRequest(@Valid SaveMaintenanceRequestDto saveMaintenanceRequestDto) {
@@ -43,17 +45,15 @@ public class MaintenanceResource {
     }
 
     @GET
-    @Path("/{id}/manager/{managerId}")
-    public MaintenanceRequestDto getMaintenanceRequest(@PathParam("id") Long maintenanceRequestId,
-        @PathParam("managerId") String managerId) {
-        return maintenanceService.getRequest(maintenanceRequestId, managerId);
+    @Path("/{id}")
+    public MaintenanceRequestDto getMaintenanceRequest(@PathParam("id") Long maintenanceRequestId) {
+        return maintenanceService.getRequest(maintenanceRequestId, jwt.getName());
     }
 
     @GET
-    @Path("/manager/{managerId}")
-    public List<MaintenanceRequestDto> getMaintenanceRequests(@PathParam("managerId") String managerId,
+    public List<MaintenanceRequestDto> getMaintenanceRequests(
         @QueryParam("page") @NotNull @Min(0) Integer page,
         @QueryParam("pageSize") @NotNull @Min(1) Integer pageSize) {
-        return maintenanceService.getRequests(managerId, page, pageSize);
+        return maintenanceService.getRequests(jwt.getName(), page, pageSize);
     }
 }
