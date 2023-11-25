@@ -58,7 +58,6 @@ public class MaintenanceResourceTest {
     public void Post_WhenGivenAValidRequestToSave_ShouldReturnSavedRequestId() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .managerId("1")
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -82,7 +81,6 @@ public class MaintenanceResourceTest {
     public void Post_WhenGivenAnInValidRequestToSave_ShouldReturnBadRequest() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .managerId("auth_user")
             .residentId(null)
             .propertyId(3L)
             .categoryId(4L)

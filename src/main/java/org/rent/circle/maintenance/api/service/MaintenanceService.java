@@ -27,7 +27,7 @@ public class MaintenanceService {
     private final MaintenanceMapper maintenanceMapper;
 
     @Transactional
-    public Long saveRequest(SaveMaintenanceRequestDto saveRequest) {
+    public Long saveRequest(SaveMaintenanceRequestDto saveRequest, @NotBlank String managerId) {
 
         Category category = categoryRepository.findById(saveRequest.getCategoryId());
         if (category == null) {
@@ -37,6 +37,7 @@ public class MaintenanceService {
 
         MaintenanceRequest maintenanceRequest = maintenanceMapper.toModel(saveRequest);
 
+        maintenanceRequest.setManagerId(managerId);
         maintenanceRequest.setCategory(category);
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
         maintenanceRequestRepository.persist(maintenanceRequest);

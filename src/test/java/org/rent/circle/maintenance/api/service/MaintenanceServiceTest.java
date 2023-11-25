@@ -43,10 +43,27 @@ public class MaintenanceServiceTest {
     MaintenanceService maintenanceService;
 
     @Test
-    public void saveRequest_WhenGivenCategoryCantBeFound_ShouldReturnNull() {
+    public void saveRequest_WhenGivenManagerIdIsInvalid_ShouldReturnThrowException() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .managerId("1")
+            .residentId(2L)
+            .propertyId(3L)
+            .categoryId(4L)
+            .description("description")
+            .build();
+
+        // Act
+        // Assert
+        assertThrows(ConstraintViolationException.class, () ->
+            maintenanceService.saveRequest(saveMaintenanceRequestDto, null)
+        );
+    }
+
+    @Test
+    public void saveRequest_WhenGivenCategoryCantBeFound_ShouldReturnNull() {
+        // Arrange
+        String managerId = "abc123";
+        SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -56,7 +73,7 @@ public class MaintenanceServiceTest {
         when(categoryRepository.findById(saveMaintenanceRequestDto.getCategoryId())).thenReturn(null);
 
         // Act
-        Long result = maintenanceService.saveRequest(saveMaintenanceRequestDto);
+        Long result = maintenanceService.saveRequest(saveMaintenanceRequestDto, managerId);
 
         // Assert
         assertNull(result);
@@ -65,8 +82,8 @@ public class MaintenanceServiceTest {
     @Test
     public void saveRequest_WhenCalled_ShouldReturnRequestId() {
         // Arrange
+        String managerId = "abc123";
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .managerId("1")
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -80,7 +97,7 @@ public class MaintenanceServiceTest {
         when(maintenanceMapper.toModel(saveMaintenanceRequestDto)).thenReturn(maintenanceRequest);
 
         // Act
-        Long result = maintenanceService.saveRequest(saveMaintenanceRequestDto);
+        Long result = maintenanceService.saveRequest(saveMaintenanceRequestDto, managerId);
 
         // Assert
         assertNotNull(result);

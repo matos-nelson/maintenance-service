@@ -35,7 +35,7 @@ public class MaintenanceResource {
 
     @POST
     public Long saveMaintenanceRequest(@Valid SaveMaintenanceRequestDto saveMaintenanceRequestDto) {
-        return maintenanceService.saveRequest(saveMaintenanceRequestDto);
+        return maintenanceService.saveRequest(saveMaintenanceRequestDto, jwt.getName());
     }
 
     @PATCH

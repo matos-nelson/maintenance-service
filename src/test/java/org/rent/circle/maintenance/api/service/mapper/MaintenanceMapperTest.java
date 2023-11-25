@@ -37,7 +37,6 @@ public class MaintenanceMapperTest {
     public void toModel_WhenGivenASaveMaintenanceRequestDto_ShouldMap() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .managerId("1")
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -50,7 +49,6 @@ public class MaintenanceMapperTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(saveMaintenanceRequestDto.getManagerId(), result.getManagerId());
         assertEquals(saveMaintenanceRequestDto.getResidentId(), result.getResidentId());
         assertEquals(saveMaintenanceRequestDto.getPropertyId(), result.getPropertyId());
         assertEquals(saveMaintenanceRequestDto.getDescription(), result.getDescription());
