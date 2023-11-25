@@ -11,7 +11,14 @@ import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
+import io.quarkus.test.security.jwt.Claim;
+import io.quarkus.test.security.jwt.JwtSecurity;
 import io.restassured.common.mapper.TypeRef;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
@@ -27,11 +34,30 @@ import org.rent.circle.maintenance.api.enums.Status;
 @AuthUser
 public class MaintenanceResourceTest {
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.METHOD})
+    @TestSecurity(user = "test_user")
+    @JwtSecurity(claims = {
+        @Claim(key = "user_id", value = "123456")
+    })
+    public @interface SingleMaintenanceRequestUser {
+
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.METHOD})
+    @TestSecurity(user = "new_user")
+    @JwtSecurity(claims = {
+        @Claim(key = "user_id", value = "def456")
+    })
+    public @interface NoMaintenanceRequestUser {
+
+    }
+
     @Test
     public void Post_WhenGivenAValidRequestToSave_ShouldReturnSavedRequestId() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .managerId("1")
             .residentId(2L)
             .propertyId(3L)
             .categoryId(4L)
@@ -55,8 +81,7 @@ public class MaintenanceResourceTest {
     public void Post_WhenGivenAnInValidRequestToSave_ShouldReturnBadRequest() {
         // Arrange
         SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .managerId(null)
-            .residentId(2L)
+            .residentId(null)
             .propertyId(3L)
             .categoryId(4L)
             .description("description")
@@ -80,7 +105,6 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(1000L)
-            .managerId("1")
             .status(Status.COMPLETED)
             .build();
 
@@ -96,12 +120,12 @@ public class MaintenanceResourceTest {
     }
 
     @Test
+    @SingleMaintenanceRequestUser
     public void PATCH_WhenMaintenanceRequestIsNotValid_ShouldReturnNoContent() {
         // Arrange
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(200L)
-            .managerId("2")
             .status(Status.COMPLETED)
             .build();
 
@@ -122,7 +146,6 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(100L)
-            .managerId("1")
             .status(Status.COMPLETED)
             .build();
 
@@ -135,8 +158,7 @@ public class MaintenanceResourceTest {
             .patch()
             .then()
             .statusCode(HttpStatus.SC_OK)
-            .body("managerId", is("1"),
-                "residentId", is(1),
+            .body("residentId", is(1),
                 "propertyId", is(1),
                 "description", is("Windows"),
                 "status", is("COMPLETED"),
@@ -153,7 +175,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/123/manager/1")
+            .get("/123")
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -166,11 +188,10 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/100/manager/1")
+            .get("/100")
             .then()
             .statusCode(HttpStatus.SC_OK)
-            .body("managerId", is("1"),
-                "residentId", is(1),
+            .body("residentId", is(1),
                 "propertyId", is(1),
                 "description", is("Windows"),
                 "instructions", is("Instructions"),
@@ -181,6 +202,7 @@ public class MaintenanceResourceTest {
     }
 
     @Test
+    @NoMaintenanceRequestUser
     public void GET_getMaintenanceRequests_WhenRequestsCantBeFound_ShouldReturnNoRequests() {
         // Arrange
 
@@ -188,20 +210,21 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/manager/999?page=0&pageSize=10")
+            .get("?page=0&pageSize=10")
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body(is("[]"));
     }
 
     @Test
+    @SingleMaintenanceRequestUser
     public void GET_getMaintenanceRequests_WhenRequestsAreFound_ShouldReturnRequests() {
         // Arrange
 
         // Act
         List<MaintenanceRequestDto> result = given()
             .when()
-            .get("/manager/2?page=0&pageSize=10")
+            .get("?page=0&pageSize=10")
             .then()
             .statusCode(HttpStatus.SC_OK)
             .extract()
@@ -212,7 +235,6 @@ public class MaintenanceResourceTest {
         // Assert
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals("2", result.get(0).getManagerId());
         assertEquals(2L, result.get(0).getResidentId());
         assertEquals(2L, result.get(0).getPropertyId());
         assertEquals(2L, result.get(0).getCategory().getId());
@@ -231,7 +253,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .when()
-            .get("/manager/123?page=0")
+            .get("?page=0")
             .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST);
     }

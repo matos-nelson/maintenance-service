@@ -10,7 +10,6 @@ import org.rent.circle.maintenance.api.dto.category.CategoryDto;
 public class MaintenanceRequestDto {
 
     private Long id;
-    private String managerId;
     private Long residentId;
     private Long propertyId;
     private CategoryDto category;

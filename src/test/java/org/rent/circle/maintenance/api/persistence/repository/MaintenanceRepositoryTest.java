@@ -39,10 +39,10 @@ public class MaintenanceRepositoryTest {
         // Arrange
 
         // Act
-        MaintenanceRequest result = maintenanceRequestRepository.findByIdAndManagerId(200L, "1");
+        MaintenanceRequest result = maintenanceRequestRepository.findByIdAndManagerId(200L, "test_user");
 
         // Assert
-        assertNull(result);
+        assertNotNull(result);
     }
 
     @Test
@@ -51,7 +51,8 @@ public class MaintenanceRepositoryTest {
         // Arrange
 
         // Act
-        List<MaintenanceRequest> result = maintenanceRequestRepository.findMaintenanceRequests("456", 0, 10);
+        List<MaintenanceRequest> result = maintenanceRequestRepository.findMaintenanceRequests("no_request_user", 0,
+            10);
 
         // Assert
         assertNotNull(result);
@@ -64,7 +65,7 @@ public class MaintenanceRepositoryTest {
         // Arrange
 
         // Act
-        List<MaintenanceRequest> result = maintenanceRequestRepository.findMaintenanceRequests("1", 0, 10);
+        List<MaintenanceRequest> result = maintenanceRequestRepository.findMaintenanceRequests("auth_user", 0, 10);
 
         // Assert
         assertNotNull(result);
@@ -77,7 +78,7 @@ public class MaintenanceRepositoryTest {
         // Arrange
 
         // Act
-        List<MaintenanceRequest> result = maintenanceRequestRepository.findMaintenanceRequests("1", 10, 10);
+        List<MaintenanceRequest> result = maintenanceRequestRepository.findMaintenanceRequests("auth_user", 10, 10);
 
         // Assert
         assertNotNull(result);

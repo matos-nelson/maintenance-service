@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-@TestSecurity(user = "test_user")
+@TestSecurity(user = "auth_user")
 @JwtSecurity(claims = {
     @Claim(key = "user_id", value = "abc123")
 })
