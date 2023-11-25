@@ -15,6 +15,7 @@ import io.restassured.common.mapper.TypeRef;
 import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import org.rent.circle.maintenance.api.annotation.AuthUser;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
@@ -23,6 +24,7 @@ import org.rent.circle.maintenance.api.enums.Status;
 @QuarkusTest
 @TestHTTPEndpoint(MaintenanceResource.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
+@AuthUser
 public class MaintenanceResourceTest {
 
     @Test

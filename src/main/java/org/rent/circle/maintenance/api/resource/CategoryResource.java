@@ -1,5 +1,6 @@
 package org.rent.circle.maintenance.api.resource;
 
+import io.quarkus.security.Authenticated;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -11,6 +12,7 @@ import org.rent.circle.maintenance.api.dto.category.CategoryDto;
 import org.rent.circle.maintenance.api.service.CategoryService;
 
 @AllArgsConstructor
+@Authenticated
 @Path("/maintenance/category")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
