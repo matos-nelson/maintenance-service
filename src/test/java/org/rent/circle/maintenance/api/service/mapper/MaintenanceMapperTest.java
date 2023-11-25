@@ -90,7 +90,6 @@ public class MaintenanceMapperTest {
         // Assert
         assertNotNull(result);
         assertEquals(maintenanceRequest.getId(), result.getId());
-        assertEquals(maintenanceRequest.getManagerId(), result.getManagerId());
         assertEquals(maintenanceRequest.getResidentId(), result.getResidentId());
         assertEquals(maintenanceRequest.getPropertyId(), result.getPropertyId());
         assertEquals(maintenanceRequest.getDescription(), result.getDescription());
@@ -138,7 +137,6 @@ public class MaintenanceMapperTest {
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(maintenanceRequest.getId(), result.get(0).getId());
-        assertEquals(maintenanceRequest.getManagerId(), result.get(0).getManagerId());
         assertEquals(maintenanceRequest.getResidentId(), result.get(0).getResidentId());
         assertEquals(maintenanceRequest.getPropertyId(), result.get(0).getPropertyId());
         assertEquals(maintenanceRequest.getDescription(), result.get(0).getDescription());

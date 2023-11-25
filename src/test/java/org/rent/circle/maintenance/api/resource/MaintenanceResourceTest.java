@@ -158,8 +158,7 @@ public class MaintenanceResourceTest {
             .patch()
             .then()
             .statusCode(HttpStatus.SC_OK)
-            .body("managerId", is("auth_user"),
-                "residentId", is(1),
+            .body("residentId", is(1),
                 "propertyId", is(1),
                 "description", is("Windows"),
                 "status", is("COMPLETED"),
@@ -192,8 +191,7 @@ public class MaintenanceResourceTest {
             .get("/100")
             .then()
             .statusCode(HttpStatus.SC_OK)
-            .body("managerId", is("auth_user"),
-                "residentId", is(1),
+            .body("residentId", is(1),
                 "propertyId", is(1),
                 "description", is("Windows"),
                 "instructions", is("Instructions"),
@@ -237,7 +235,6 @@ public class MaintenanceResourceTest {
         // Assert
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals("test_user", result.get(0).getManagerId());
         assertEquals(2L, result.get(0).getResidentId());
         assertEquals(2L, result.get(0).getPropertyId());
         assertEquals(2L, result.get(0).getCategory().getId());
