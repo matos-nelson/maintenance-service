@@ -9,6 +9,7 @@ A few environment variables need to be defined in order to run the application.
 - DB_USER: Username for database
 - DB_PWD: Password for user
 - DB_URL: Url for database
+- ISSUER_PROJECT_ID: ID for issuing tokens
 
 ## Running the application in dev mode
 

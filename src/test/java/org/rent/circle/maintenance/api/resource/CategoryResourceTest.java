@@ -12,11 +12,13 @@ import io.restassured.common.mapper.TypeRef;
 import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import org.rent.circle.maintenance.api.annotation.AuthUser;
 import org.rent.circle.maintenance.api.dto.category.CategoryDto;
 
 @QuarkusTest
 @TestHTTPEndpoint(CategoryResource.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
+@AuthUser
 public class CategoryResourceTest {
 
     @Test

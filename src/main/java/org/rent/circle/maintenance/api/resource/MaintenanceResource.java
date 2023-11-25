@@ -1,5 +1,6 @@
 package org.rent.circle.maintenance.api.resource;
 
+import io.quarkus.security.Authenticated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -21,6 +22,7 @@ import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestD
 import org.rent.circle.maintenance.api.service.MaintenanceService;
 
 @AllArgsConstructor
+@Authenticated
 @Path("/maintenance/request")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
