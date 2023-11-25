@@ -46,9 +46,9 @@ public class MaintenanceService {
     }
 
     @Transactional
-    public MaintenanceRequestDto updateRequest(UpdateMaintenanceRequestDto updateRequest) {
+    public MaintenanceRequestDto updateRequest(UpdateMaintenanceRequestDto updateRequest, @NotBlank String managerId) {
         MaintenanceRequest maintenanceRequestDb = maintenanceRequestRepository.findByIdAndManagerId(
-            updateRequest.getMaintenanceRequestId(), updateRequest.getManagerId());
+            updateRequest.getMaintenanceRequestId(), managerId);
 
         if (maintenanceRequestDb == null) {
             log.info("Could Not Find Maintenance Request With Given Id: {}", updateRequest.getMaintenanceRequestId());

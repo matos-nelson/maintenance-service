@@ -41,7 +41,7 @@ public class MaintenanceResource {
     @PATCH
     public MaintenanceRequestDto updateMaintenanceRequest(
         @Valid UpdateMaintenanceRequestDto updateMaintenanceRequestDto) {
-        return maintenanceService.updateRequest(updateMaintenanceRequestDto);
+        return maintenanceService.updateRequest(updateMaintenanceRequestDto, jwt.getName());
     }
 
     @GET

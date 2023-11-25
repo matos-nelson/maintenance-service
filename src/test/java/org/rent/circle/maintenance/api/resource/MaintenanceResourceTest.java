@@ -105,7 +105,6 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(1000L)
-            .managerId("auth_user")
             .status(Status.COMPLETED)
             .build();
 
@@ -127,7 +126,6 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(200L)
-            .managerId("test_user")
             .status(Status.COMPLETED)
             .build();
 
@@ -148,7 +146,6 @@ public class MaintenanceResourceTest {
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
             .builder()
             .maintenanceRequestId(100L)
-            .managerId("auth_user")
             .status(Status.COMPLETED)
             .build();
 

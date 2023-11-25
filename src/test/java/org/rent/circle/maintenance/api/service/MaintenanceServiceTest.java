@@ -101,8 +101,24 @@ public class MaintenanceServiceTest {
 
         // Assert
         assertNotNull(result);
+        assertEquals(maintenanceRequest.getManagerId(), managerId);
         assertEquals(maintenanceRequest.getId(), result);
         assertNotNull(maintenanceRequest.getCategory());
+    }
+
+    @Test
+    public void updateRequest_WhenGivenManagerIdIsInvalid_ShouldReturnThrowException() {
+        // Arrange
+        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
+            .maintenanceRequestId(100L)
+            .status(Status.REJECTED)
+            .build();
+
+        // Act
+        // Assert
+        assertThrows(ConstraintViolationException.class, () ->
+            maintenanceService.updateRequest(updateMaintenanceRequestDto, null)
+        );
     }
 
     @Test
@@ -112,7 +128,6 @@ public class MaintenanceServiceTest {
         String managerId = "1";
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
-            .managerId(managerId)
             .status(Status.REJECTED)
             .build();
 
@@ -125,7 +140,7 @@ public class MaintenanceServiceTest {
         when(maintenanceMapper.toDto(Mockito.any())).thenReturn(new MaintenanceRequestDto());
 
         // Act
-        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto);
+        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto, managerId);
 
         // Assert
         assertNotNull(result);
@@ -141,7 +156,6 @@ public class MaintenanceServiceTest {
         String managerId = "2";
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
-            .managerId(managerId)
             .status(Status.COMPLETED)
             .build();
 
@@ -153,7 +167,7 @@ public class MaintenanceServiceTest {
             .thenReturn(maintenanceRequest);
 
         // Act
-        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto);
+        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto, managerId);
 
         // Assert
         assertNull(result);
@@ -167,7 +181,6 @@ public class MaintenanceServiceTest {
         String managerId = "2";
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
-            .managerId(managerId)
             .note("Completed Request")
             .status(Status.COMPLETED)
             .build();
@@ -181,7 +194,7 @@ public class MaintenanceServiceTest {
         when(maintenanceMapper.toDto(Mockito.any())).thenReturn(new MaintenanceRequestDto());
 
         // Act
-        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto);
+        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto, managerId);
 
         // Assert
         assertNotNull(result);
@@ -198,7 +211,6 @@ public class MaintenanceServiceTest {
         String managerId = "2";
         UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
-            .managerId(managerId)
             .status(Status.COMPLETED)
             .build();
 
@@ -207,7 +219,7 @@ public class MaintenanceServiceTest {
 
         // Act
         assertDoesNotThrow(() -> {
-            MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto);
+            MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto, managerId);
             assertNull(result);
         });
 
