@@ -2,7 +2,6 @@ package org.rent.circle.maintenance.api.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -27,7 +26,7 @@ public class MaintenanceService {
     private final MaintenanceMapper maintenanceMapper;
 
     @Transactional
-    public Long saveRequest(SaveMaintenanceRequestDto saveRequest, @NotBlank String managerId) {
+    public Long saveRequest(SaveMaintenanceRequestDto saveRequest, String managerId) {
 
         Category category = categoryRepository.findById(saveRequest.getCategoryId());
         if (category == null) {

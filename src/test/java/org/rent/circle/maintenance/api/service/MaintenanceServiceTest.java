@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
@@ -12,7 +11,6 @@ import static org.mockito.Mockito.when;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -41,23 +39,6 @@ public class MaintenanceServiceTest {
 
     @Inject
     MaintenanceService maintenanceService;
-
-    @Test
-    public void saveRequest_WhenGivenManagerIdIsInvalid_ShouldReturnThrowException() {
-        // Arrange
-        SaveMaintenanceRequestDto saveMaintenanceRequestDto = SaveMaintenanceRequestDto.builder()
-            .residentId(2L)
-            .propertyId(3L)
-            .categoryId(4L)
-            .description("description")
-            .build();
-
-        // Act
-        // Assert
-        assertThrows(ConstraintViolationException.class, () ->
-            maintenanceService.saveRequest(saveMaintenanceRequestDto, null)
-        );
-    }
 
     @Test
     public void saveRequest_WhenGivenCategoryCantBeFound_ShouldReturnNull() {
