@@ -46,7 +46,7 @@ public class MaintenanceService {
     }
 
     @Transactional
-    public MaintenanceRequestDto updateRequest(UpdateMaintenanceRequestDto updateRequest, @NotBlank String managerId) {
+    public MaintenanceRequestDto updateRequest(UpdateMaintenanceRequestDto updateRequest, String managerId) {
         MaintenanceRequest maintenanceRequestDb = maintenanceRequestRepository.findByIdAndManagerId(
             updateRequest.getMaintenanceRequestId(), managerId);
 
@@ -72,13 +72,13 @@ public class MaintenanceService {
         return maintenanceMapper.toDto(maintenanceRequestDb);
     }
 
-    public MaintenanceRequestDto getRequest(Long maintenanceRequestId, @NotBlank String managerId) {
+    public MaintenanceRequestDto getRequest(Long maintenanceRequestId, String managerId) {
         MaintenanceRequest maintenanceRequest = maintenanceRequestRepository
             .findByIdAndManagerId(maintenanceRequestId, managerId);
         return maintenanceMapper.toDto(maintenanceRequest);
     }
 
-    public List<MaintenanceRequestDto> getRequests(@NotBlank String managerId, int page, int pageSize) {
+    public List<MaintenanceRequestDto> getRequests(String managerId, int page, int pageSize) {
         List<MaintenanceRequest> maintenanceRequests = maintenanceRequestRepository
             .findMaintenanceRequests(managerId, page, pageSize);
         return maintenanceMapper.toDtoList(maintenanceRequests);

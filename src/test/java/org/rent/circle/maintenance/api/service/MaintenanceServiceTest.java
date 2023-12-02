@@ -107,21 +107,6 @@ public class MaintenanceServiceTest {
     }
 
     @Test
-    public void updateRequest_WhenGivenManagerIdIsInvalid_ShouldReturnThrowException() {
-        // Arrange
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
-            .maintenanceRequestId(100L)
-            .status(Status.REJECTED)
-            .build();
-
-        // Act
-        // Assert
-        assertThrows(ConstraintViolationException.class, () ->
-            maintenanceService.updateRequest(updateMaintenanceRequestDto, null)
-        );
-    }
-
-    @Test
     public void updateRequest_WhenGivenAStatus_ShouldUpdateStatus() {
         // Arrange
         Long maintenanceRequestId = 1L;
@@ -227,18 +212,6 @@ public class MaintenanceServiceTest {
         Mockito.verify(maintenanceRequestRepository, times(0)).persist((MaintenanceRequest) Mockito.any());
     }
 
-
-    @Test
-    public void getRequest_WhenGivenManagerIdIsInvalid_ShouldReturnThrowException() {
-        // Arrange
-
-        // Act
-        // Assert
-        assertThrows(ConstraintViolationException.class, () ->
-            maintenanceService.getRequest(100L, null)
-        );
-    }
-
     @Test
     public void getRequest_WhenMaintenanceWithGivenIdsAreNotFound_ShouldReturnNull() {
         // Arrange
@@ -270,17 +243,6 @@ public class MaintenanceServiceTest {
 
         // Assert
         assertNull(result);
-    }
-
-    @Test
-    public void getRequests_WhenGivenManagerIdIsInvalid_ShouldReturnThrowException() {
-        // Arrange
-
-        // Act
-        // Assert
-        assertThrows(ConstraintViolationException.class, () ->
-            maintenanceService.getRequests(null, 0, 10)
-        );
     }
 
     @Test
