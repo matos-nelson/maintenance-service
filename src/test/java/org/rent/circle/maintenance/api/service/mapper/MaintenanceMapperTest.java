@@ -14,6 +14,7 @@ import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.enums.Status;
 import org.rent.circle.maintenance.api.persistence.model.Category;
+import org.rent.circle.maintenance.api.persistence.model.Labor;
 import org.rent.circle.maintenance.api.persistence.model.MaintenanceRequest;
 
 @QuarkusTest
@@ -73,6 +74,13 @@ public class MaintenanceMapperTest {
         category.setId(100L);
         category.setName("My Category");
 
+        Labor labor = new Labor();
+        labor.setId(200L);
+        labor.setWorkDate(LocalDateTime.now());
+        labor.setHours(12.5F);
+        labor.setMaintenanceRequestId(1L);
+        labor.setDescription("My Labor Item");
+
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
         maintenanceRequest.setId(1L);
         maintenanceRequest.setManagerId("2");
@@ -83,6 +91,7 @@ public class MaintenanceMapperTest {
         maintenanceRequest.setInstructions("My Instructions");
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
         maintenanceRequest.setUpdatedAt(LocalDateTime.now());
+        maintenanceRequest.setLabors(Collections.singletonList(labor));
 
         // Act
         MaintenanceRequestDto result = maintenanceMapper.toDto(maintenanceRequest);
@@ -99,6 +108,8 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getCategory().getId(), result.getCategory().getId());
         assertEquals(maintenanceRequest.getCategory().getName(), result.getCategory().getName());
         assertEquals(maintenanceRequest.getUpdatedAt(), result.getUpdatedAt());
+        assertEquals(1, maintenanceRequest.getLabors().size());
+        assertEquals(labor, maintenanceRequest.getLabors().get(0));
     }
 
     @Test
@@ -119,6 +130,13 @@ public class MaintenanceMapperTest {
         category.setId(100L);
         category.setName("My Category");
 
+        Labor labor = new Labor();
+        labor.setId(200L);
+        labor.setWorkDate(LocalDateTime.now());
+        labor.setHours(12.5F);
+        labor.setMaintenanceRequestId(1L);
+        labor.setDescription("My Labor Item");
+
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
         maintenanceRequest.setId(1L);
         maintenanceRequest.setManagerId("2");
@@ -129,6 +147,7 @@ public class MaintenanceMapperTest {
         maintenanceRequest.setInstructions("My Instructions");
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
         maintenanceRequest.setUpdatedAt(LocalDateTime.now());
+        maintenanceRequest.setLabors(Collections.singletonList(labor));
 
         // Act
         List<MaintenanceRequestDto> result = maintenanceMapper.toDtoList(Collections.singletonList(maintenanceRequest));
@@ -146,5 +165,7 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getCategory().getId(), result.get(0).getCategory().getId());
         assertEquals(maintenanceRequest.getCategory().getName(), result.get(0).getCategory().getName());
         assertEquals(maintenanceRequest.getUpdatedAt(), result.get(0).getUpdatedAt());
+        assertEquals(1, maintenanceRequest.getLabors().size());
+        assertEquals(labor, maintenanceRequest.getLabors().get(0));
     }
 }

@@ -1,6 +1,7 @@
 package org.rent.circle.maintenance.api.dto.maintenance;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.rent.circle.maintenance.api.dto.category.CategoryDto;
@@ -19,4 +20,5 @@ public class MaintenanceRequestDto {
     private String status;
     private LocalDateTime completedAt;
     private LocalDateTime updatedAt;
+    private List<LaborDto> labors;
 }
