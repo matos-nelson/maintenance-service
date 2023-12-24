@@ -14,7 +14,7 @@ public class LaborTest {
     public void Labor_SettersAndGetters_ShouldWork() {
         // Arrange
         BeanTester beanTester = new BeanTester();
-        beanTester.addExcludedField("workDate");
+        beanTester.addExcludedField("workCompletedAt");
         beanTester.addExcludedField("createdAt");
         beanTester.addExcludedField("updatedAt");
 
@@ -29,12 +29,12 @@ public class LaborTest {
         Labor labor = new Labor();
 
         // Act
-        labor.setWorkDate(LocalDateTime.now());
+        labor.setWorkCompletedAt(LocalDateTime.now());
         labor.setUpdatedAt(LocalDateTime.now());
         labor.setCreatedAt(LocalDateTime.now());
 
         // Assert
-        assertNotNull(labor.getWorkDate());
+        assertNotNull(labor.getWorkCompletedAt());
         assertNotNull(labor.getCreatedAt());
         assertNotNull(labor.getUpdatedAt());
     }

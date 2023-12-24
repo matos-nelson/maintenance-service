@@ -76,7 +76,7 @@ public class MaintenanceMapperTest {
 
         Labor labor = new Labor();
         labor.setId(200L);
-        labor.setWorkDate(LocalDateTime.now());
+        labor.setWorkCompletedAt(LocalDateTime.now());
         labor.setHours(12.5F);
         labor.setMaintenanceRequestId(1L);
         labor.setDescription("My Labor Item");
@@ -132,7 +132,7 @@ public class MaintenanceMapperTest {
 
         Labor labor = new Labor();
         labor.setId(200L);
-        labor.setWorkDate(LocalDateTime.now());
+        labor.setWorkCompletedAt(LocalDateTime.now());
         labor.setHours(12.5F);
         labor.setMaintenanceRequestId(1L);
         labor.setDescription("My Labor Item");

@@ -26,8 +26,8 @@ public class Labor extends BaseModel {
     @Column(name = "maintenance_request_id", insertable = false, updatable = false, nullable = false)
     private Long maintenanceRequestId;
 
-    @Column(name = "work_date")
-    private LocalDateTime workDate;
+    @Column(name = "work_completed_at")
+    private LocalDateTime workCompletedAt;
 
     @Column(name = "hours")
     private Float hours;
