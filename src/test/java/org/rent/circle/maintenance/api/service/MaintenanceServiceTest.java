@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
-import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestStatusDto;
 import org.rent.circle.maintenance.api.enums.Status;
 import org.rent.circle.maintenance.api.persistence.model.Category;
 import org.rent.circle.maintenance.api.persistence.model.MaintenanceRequest;
@@ -88,11 +88,11 @@ public class MaintenanceServiceTest {
     }
 
     @Test
-    public void updateRequest_WhenGivenAStatus_ShouldUpdateStatus() {
+    public void updateRequestStatus_WhenGivenAStatus_ShouldUpdateStatus() {
         // Arrange
         Long maintenanceRequestId = 1L;
         String managerId = "1";
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
             .status(Status.REJECTED)
             .build();
@@ -106,7 +106,8 @@ public class MaintenanceServiceTest {
         when(maintenanceMapper.toDto(Mockito.any())).thenReturn(new MaintenanceRequestDto());
 
         // Act
-        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto, managerId);
+        MaintenanceRequestDto result = maintenanceService.updateRequestStatus(updateRequestStatusDto,
+            managerId);
 
         // Assert
         assertNotNull(result);
@@ -116,11 +117,11 @@ public class MaintenanceServiceTest {
     }
 
     @Test
-    public void updateRequest_WhenMaintenanceRequestIsNotUpdatable_ShouldReturnNull() {
+    public void updateRequestStatus_WhenMaintenanceRequestIsNotUpdatable_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
         String managerId = "2";
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
             .status(Status.COMPLETED)
             .build();
@@ -133,7 +134,8 @@ public class MaintenanceServiceTest {
             .thenReturn(maintenanceRequest);
 
         // Act
-        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto, managerId);
+        MaintenanceRequestDto result = maintenanceService.updateRequestStatus(updateRequestStatusDto,
+            managerId);
 
         // Assert
         assertNull(result);
@@ -141,11 +143,11 @@ public class MaintenanceServiceTest {
     }
 
     @Test
-    public void updateRequest_WhenGivenACompletedStatus_ShouldPopulateCompletedAt() {
+    public void updateRequestStatus_WhenGivenACompletedStatus_ShouldPopulateCompletedAt() {
         // Arrange
         Long maintenanceRequestId = 1L;
         String managerId = "2";
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
             .note("Completed Request")
             .status(Status.COMPLETED)
@@ -160,22 +162,23 @@ public class MaintenanceServiceTest {
         when(maintenanceMapper.toDto(Mockito.any())).thenReturn(new MaintenanceRequestDto());
 
         // Act
-        MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto, managerId);
+        MaintenanceRequestDto result = maintenanceService.updateRequestStatus(updateRequestStatusDto,
+            managerId);
 
         // Assert
         assertNotNull(result);
         Mockito.verify(maintenanceRequestRepository, times(1)).persist(maintenanceRequest);
-        assertEquals(updateMaintenanceRequestDto.getNote(), maintenanceRequest.getNote());
+        assertEquals(updateRequestStatusDto.getNote(), maintenanceRequest.getNote());
         assertEquals(Status.COMPLETED.value, maintenanceRequest.getStatus());
         assertNotNull(maintenanceRequest.getCompletedAt());
     }
 
     @Test
-    public void updateRequest_WhenGivenMaintenanceIdIsNotFound_ShouldReturnNull() {
+    public void updateRequestStatus_WhenGivenMaintenanceIdIsNotFound_ShouldReturnNull() {
         // Arrange
         Long maintenanceRequestId = 1L;
         String managerId = "2";
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto.builder()
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto.builder()
             .maintenanceRequestId(maintenanceRequestId)
             .status(Status.COMPLETED)
             .build();
@@ -185,7 +188,8 @@ public class MaintenanceServiceTest {
 
         // Act
         assertDoesNotThrow(() -> {
-            MaintenanceRequestDto result = maintenanceService.updateRequest(updateMaintenanceRequestDto, managerId);
+            MaintenanceRequestDto result = maintenanceService.updateRequestStatus(updateRequestStatusDto,
+                managerId);
             assertNull(result);
         });
 

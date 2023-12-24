@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
-import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestStatusDto;
 import org.rent.circle.maintenance.api.service.MaintenanceService;
 
 @AllArgsConstructor
@@ -41,8 +41,8 @@ public class MaintenanceResource {
     @PATCH
     @Path("/status")
     public MaintenanceRequestDto updateMaintenanceRequest(
-        @Valid UpdateMaintenanceRequestDto updateMaintenanceRequestDto) {
-        return maintenanceService.updateRequest(updateMaintenanceRequestDto, jwt.getName());
+        @Valid UpdateRequestStatusDto updateRequestStatusDto) {
+        return maintenanceService.updateRequestStatus(updateRequestStatusDto, jwt.getName());
     }
 
     @GET

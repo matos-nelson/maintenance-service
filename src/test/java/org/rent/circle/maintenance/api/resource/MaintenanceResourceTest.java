@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.rent.circle.maintenance.api.annotation.AuthUser;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
-import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestStatusDto;
 import org.rent.circle.maintenance.api.enums.Status;
 
 @QuarkusTest
@@ -102,7 +102,7 @@ public class MaintenanceResourceTest {
     @Test
     public void PATCH_WhenMaintenanceRequestWithGivenIdDoesNotExist_ShouldReturnNoContent() {
         // Arrange
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto
             .builder()
             .maintenanceRequestId(1000L)
             .status(Status.COMPLETED)
@@ -112,7 +112,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .contentType("application/json")
-            .body(updateMaintenanceRequestDto)
+            .body(updateRequestStatusDto)
             .when()
             .patch("/status")
             .then()
@@ -123,7 +123,7 @@ public class MaintenanceResourceTest {
     @SingleMaintenanceRequestUser
     public void PATCH_WhenMaintenanceRequestIsNotValid_ShouldReturnNoContent() {
         // Arrange
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto
             .builder()
             .maintenanceRequestId(200L)
             .status(Status.COMPLETED)
@@ -133,7 +133,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .contentType("application/json")
-            .body(updateMaintenanceRequestDto)
+            .body(updateRequestStatusDto)
             .when()
             .patch("/status")
             .then()
@@ -143,7 +143,7 @@ public class MaintenanceResourceTest {
     @Test
     public void PATCH_WhenMaintenanceRequestIsValid_ShouldReturnMaintenanceRequest() {
         // Arrange
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto
             .builder()
             .maintenanceRequestId(100L)
             .status(Status.COMPLETED)
@@ -153,7 +153,7 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .contentType("application/json")
-            .body(updateMaintenanceRequestDto)
+            .body(updateRequestStatusDto)
             .when()
             .patch("/status")
             .then()
