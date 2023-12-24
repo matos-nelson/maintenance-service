@@ -21,4 +21,5 @@ public class MaintenanceRequestDto {
     private LocalDateTime completedAt;
     private LocalDateTime updatedAt;
     private List<LaborDto> labors;
+    private List<BillableDto> billables;
 }

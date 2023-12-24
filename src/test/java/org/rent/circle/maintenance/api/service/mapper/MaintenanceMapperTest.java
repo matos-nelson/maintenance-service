@@ -117,10 +117,8 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getCategory().getId(), result.getCategory().getId());
         assertEquals(maintenanceRequest.getCategory().getName(), result.getCategory().getName());
         assertEquals(maintenanceRequest.getUpdatedAt(), result.getUpdatedAt());
-        assertEquals(1, maintenanceRequest.getLabors().size());
-        assertEquals(labor, maintenanceRequest.getLabors().get(0));
-        assertEquals(1, maintenanceRequest.getBillables().size());
-        assertEquals(billable, maintenanceRequest.getBillables().get(0));
+        assertEquals(1, result.getLabors().size());
+        assertEquals(1, result.getBillables().size());
     }
 
     @Test
@@ -184,9 +182,7 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getCategory().getId(), result.get(0).getCategory().getId());
         assertEquals(maintenanceRequest.getCategory().getName(), result.get(0).getCategory().getName());
         assertEquals(maintenanceRequest.getUpdatedAt(), result.get(0).getUpdatedAt());
-        assertEquals(1, maintenanceRequest.getLabors().size());
-        assertEquals(labor, maintenanceRequest.getLabors().get(0));
-        assertEquals(1, maintenanceRequest.getBillables().size());
-        assertEquals(billable, maintenanceRequest.getBillables().get(0));
+        assertEquals(1, result.get(0).getLabors().size());
+        assertEquals(1, result.get(0).getBillables().size());
     }
 }
