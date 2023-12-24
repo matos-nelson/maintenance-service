@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestItemsDto;
 import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestStatusDto;
 import org.rent.circle.maintenance.api.enums.Status;
 import org.rent.circle.maintenance.api.persistence.model.Category;
@@ -264,5 +265,55 @@ public class MaintenanceServiceTest {
         // Assert
         assertNotNull(result);
         assertEquals(1, result.size());
+    }
+
+    @Test
+    public void updateRequestItems_WhenGivenMaintenanceIdIsNotFound_ShouldReturnNull() {
+        // Arrange
+        Long maintenanceRequestId = 1L;
+        String managerId = "2";
+        UpdateRequestItemsDto updateRequestItemsDto = UpdateRequestItemsDto.builder()
+            .maintenanceRequestId(maintenanceRequestId)
+            .billables(Collections.emptyList())
+            .labors(Collections.emptyList())
+            .build();
+
+        when(maintenanceRequestRepository.findByIdAndManagerId(maintenanceRequestId, managerId))
+            .thenReturn(null);
+
+        // Act
+        MaintenanceRequestDto result = maintenanceService.updateRequestItems(updateRequestItemsDto, managerId);
+
+        // Assert
+        assertNull(result);
+        Mockito.verify(maintenanceRequestRepository, times(0)).persist((MaintenanceRequest) Mockito.any());
+    }
+
+    @Test
+    public void updateRequestItems_WhenCalled_ShouldUpdateMaintenanceRequestItems() {
+        // Arrange
+        Long maintenanceRequestId = 1L;
+        String managerId = "2";
+
+        MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
+        maintenanceRequest.setId(maintenanceRequestId);
+
+        UpdateRequestItemsDto updateRequestItemsDto = UpdateRequestItemsDto.builder()
+            .maintenanceRequestId(maintenanceRequestId)
+            .billables(Collections.emptyList())
+            .labors(Collections.emptyList())
+            .build();
+
+        when(maintenanceRequestRepository.findByIdAndManagerId(maintenanceRequestId, managerId))
+            .thenReturn(maintenanceRequest);
+        when(maintenanceMapper.toDto(maintenanceRequest)).thenReturn(new MaintenanceRequestDto());
+
+        // Act
+        MaintenanceRequestDto result = maintenanceService.updateRequestItems(updateRequestItemsDto, managerId);
+
+        // Assert
+        assertNotNull(result);
+        Mockito.verify(maintenanceMapper, times(1)).updateRequestItems(updateRequestItemsDto, maintenanceRequest);
+        Mockito.verify(maintenanceRequestRepository, times(1)).persist((MaintenanceRequest) Mockito.any());
     }
 }
