@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
 import org.rent.circle.maintenance.api.enums.Status;
+import org.rent.circle.maintenance.api.persistence.model.Billable;
 import org.rent.circle.maintenance.api.persistence.model.Category;
 import org.rent.circle.maintenance.api.persistence.model.Labor;
 import org.rent.circle.maintenance.api.persistence.model.MaintenanceRequest;
@@ -81,6 +82,13 @@ public class MaintenanceMapperTest {
         labor.setMaintenanceRequestId(1L);
         labor.setDescription("My Labor Item");
 
+        Billable billable = new Billable();
+        billable.setId(300L);
+        billable.setDescription("My Billable Item");
+        billable.setRate(123.11);
+        billable.setQuantity(10);
+        billable.setMaintenanceRequestId(1L);
+
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
         maintenanceRequest.setId(1L);
         maintenanceRequest.setManagerId("2");
@@ -92,6 +100,7 @@ public class MaintenanceMapperTest {
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
         maintenanceRequest.setUpdatedAt(LocalDateTime.now());
         maintenanceRequest.setLabors(Collections.singletonList(labor));
+        maintenanceRequest.setBillables(Collections.singletonList(billable));
 
         // Act
         MaintenanceRequestDto result = maintenanceMapper.toDto(maintenanceRequest);
@@ -110,6 +119,8 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getUpdatedAt(), result.getUpdatedAt());
         assertEquals(1, maintenanceRequest.getLabors().size());
         assertEquals(labor, maintenanceRequest.getLabors().get(0));
+        assertEquals(1, maintenanceRequest.getBillables().size());
+        assertEquals(billable, maintenanceRequest.getBillables().get(0));
     }
 
     @Test
@@ -137,6 +148,13 @@ public class MaintenanceMapperTest {
         labor.setMaintenanceRequestId(1L);
         labor.setDescription("My Labor Item");
 
+        Billable billable = new Billable();
+        billable.setId(300L);
+        billable.setDescription("My Billable Item");
+        billable.setRate(123.11);
+        billable.setQuantity(10);
+        billable.setMaintenanceRequestId(1L);
+
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
         maintenanceRequest.setId(1L);
         maintenanceRequest.setManagerId("2");
@@ -148,6 +166,7 @@ public class MaintenanceMapperTest {
         maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
         maintenanceRequest.setUpdatedAt(LocalDateTime.now());
         maintenanceRequest.setLabors(Collections.singletonList(labor));
+        maintenanceRequest.setBillables(Collections.singletonList(billable));
 
         // Act
         List<MaintenanceRequestDto> result = maintenanceMapper.toDtoList(Collections.singletonList(maintenanceRequest));
@@ -167,5 +186,7 @@ public class MaintenanceMapperTest {
         assertEquals(maintenanceRequest.getUpdatedAt(), result.get(0).getUpdatedAt());
         assertEquals(1, maintenanceRequest.getLabors().size());
         assertEquals(labor, maintenanceRequest.getLabors().get(0));
+        assertEquals(1, maintenanceRequest.getBillables().size());
+        assertEquals(billable, maintenanceRequest.getBillables().get(0));
     }
 }

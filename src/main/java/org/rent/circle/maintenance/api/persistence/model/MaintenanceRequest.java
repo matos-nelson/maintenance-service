@@ -60,4 +60,8 @@ public class MaintenanceRequest extends BaseModel {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "maintenance_request_id", referencedColumnName = "id", nullable = false)
     private List<Labor> labors;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "maintenance_request_id", referencedColumnName = "id", nullable = false)
+    private List<Billable> billables;
 }
