@@ -34,6 +34,17 @@ CREATE TABLE IF NOT EXISTS labor (
   KEY maintenance_request_id_idx (maintenance_request_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE IF NOT EXISTS billable (
+  id bigint PRIMARY KEY AUTO_INCREMENT,
+  maintenance_request_id bigint NOT NULL,
+  quantity smallint NOT NULL,
+  rate double(6, 2) NOT NULL,
+  description varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY maintenance_request_id_idx (maintenance_request_id)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 INSERT INTO category(name) values ('Appliance');
 INSERT INTO category(name) values ('Doors/Keys');
 INSERT INTO category(name) values ('Electrical');
