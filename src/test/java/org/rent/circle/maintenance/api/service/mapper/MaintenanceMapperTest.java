@@ -69,6 +69,35 @@ public class MaintenanceMapperTest {
     }
 
     @Test
+    public void toDto_WhenGivenAMaintenanceRequest_ShouldReturnDto() {
+        // Arrange
+        MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
+        maintenanceRequest.setId(1L);
+        maintenanceRequest.setManagerId("2");
+        maintenanceRequest.setResidentId(3L);
+        maintenanceRequest.setPropertyId(4L);
+        maintenanceRequest.setDescription("My Description");
+        maintenanceRequest.setInstructions("My Instructions");
+        maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
+        maintenanceRequest.setUpdatedAt(LocalDateTime.now());
+
+        // Act
+        MaintenanceRequestDto result = maintenanceMapper.toDto(maintenanceRequest);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(maintenanceRequest.getId(), result.getId());
+        assertEquals(maintenanceRequest.getResidentId(), result.getResidentId());
+        assertEquals(maintenanceRequest.getPropertyId(), result.getPropertyId());
+        assertEquals(maintenanceRequest.getDescription(), result.getDescription());
+        assertEquals(maintenanceRequest.getInstructions(), result.getInstructions());
+        assertEquals(maintenanceRequest.getNote(), result.getNote());
+        assertEquals(maintenanceRequest.getStatus(), result.getStatus());
+        assertNull(result.getCategory());
+        assertEquals(maintenanceRequest.getUpdatedAt(), result.getUpdatedAt());
+    }
+
+    @Test
     public void toDto_WhenGivenAValidMaintenanceRequest_ShouldReturnDto() {
         // Arrange
         Category category = new Category();
@@ -130,6 +159,36 @@ public class MaintenanceMapperTest {
 
         // Assert
         assertNull(result);
+    }
+
+    @Test
+    public void toDtoList_WhenGivenMaintenanceRequests_ShouldReturnDtoList() {
+        // Arrange
+        MaintenanceRequest maintenanceRequest = new MaintenanceRequest();
+        maintenanceRequest.setId(1L);
+        maintenanceRequest.setManagerId("2");
+        maintenanceRequest.setResidentId(3L);
+        maintenanceRequest.setPropertyId(4L);
+        maintenanceRequest.setDescription("My Description");
+        maintenanceRequest.setInstructions("My Instructions");
+        maintenanceRequest.setStatus(Status.IN_PROGRESS.value);
+        maintenanceRequest.setUpdatedAt(LocalDateTime.now());
+
+        // Act
+        List<MaintenanceRequestDto> result = maintenanceMapper.toDtoList(Collections.singletonList(maintenanceRequest));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(maintenanceRequest.getId(), result.get(0).getId());
+        assertEquals(maintenanceRequest.getResidentId(), result.get(0).getResidentId());
+        assertEquals(maintenanceRequest.getPropertyId(), result.get(0).getPropertyId());
+        assertEquals(maintenanceRequest.getDescription(), result.get(0).getDescription());
+        assertEquals(maintenanceRequest.getInstructions(), result.get(0).getInstructions());
+        assertEquals(maintenanceRequest.getNote(), result.get(0).getNote());
+        assertEquals(maintenanceRequest.getStatus(), result.get(0).getStatus());
+        assertNull(result.get(0).getCategory());
+        assertEquals(maintenanceRequest.getUpdatedAt(), result.get(0).getUpdatedAt());
     }
 
     @Test

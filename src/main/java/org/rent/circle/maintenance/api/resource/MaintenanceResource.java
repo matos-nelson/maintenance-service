@@ -39,6 +39,7 @@ public class MaintenanceResource {
     }
 
     @PATCH
+    @Path("/status")
     public MaintenanceRequestDto updateMaintenanceRequest(
         @Valid UpdateMaintenanceRequestDto updateMaintenanceRequestDto) {
         return maintenanceService.updateRequest(updateMaintenanceRequestDto, jwt.getName());

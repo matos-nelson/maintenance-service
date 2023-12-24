@@ -114,7 +114,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch()
+            .patch("/status")
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -135,7 +135,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch()
+            .patch("/status")
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -155,7 +155,7 @@ public class MaintenanceResourceTest {
             .contentType("application/json")
             .body(updateMaintenanceRequestDto)
             .when()
-            .patch()
+            .patch("/status")
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body("residentId", is(1),
