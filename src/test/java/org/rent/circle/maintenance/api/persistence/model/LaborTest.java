@@ -3,6 +3,7 @@ package org.rent.circle.maintenance.api.persistence.model;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.quarkus.test.junit.QuarkusTest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.force66.beantester.BeanTester;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ public class LaborTest {
         Labor labor = new Labor();
 
         // Act
-        labor.setWorkCompletedAt(LocalDateTime.now());
+        labor.setWorkCompletedAt(LocalDate.now());
         labor.setUpdatedAt(LocalDateTime.now());
         labor.setCreatedAt(LocalDateTime.now());
 

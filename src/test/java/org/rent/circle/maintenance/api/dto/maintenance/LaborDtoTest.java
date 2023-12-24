@@ -2,7 +2,7 @@ package org.rent.circle.maintenance.api.dto.maintenance;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import org.force66.beantester.BeanTester;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ public class LaborDtoTest {
     public void LaborDto_SettersAndGetters_ShouldWork() {
         // Arrange
         BeanTester beanTester = new BeanTester();
-        beanTester.addExcludedField("workDate");
+        beanTester.addExcludedField("workCompletedAt");
 
         // Act
         beanTester.testBean(LaborDto.class);
@@ -24,9 +24,9 @@ public class LaborDtoTest {
         LaborDto labor = new LaborDto();
 
         // Act
-        labor.setWorkDate(LocalDateTime.now());
+        labor.setWorkCompletedAt(LocalDate.now());
 
         // Assert
-        assertNotNull(labor.getWorkDate());
+        assertNotNull(labor.getWorkCompletedAt());
     }
 }
