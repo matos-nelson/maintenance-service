@@ -19,12 +19,18 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.apache.http.HttpStatus;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.rent.circle.maintenance.api.annotation.AuthUser;
+import org.rent.circle.maintenance.api.dto.maintenance.BillableDto;
+import org.rent.circle.maintenance.api.dto.maintenance.LaborDto;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestItemsDto;
 import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestStatusDto;
 import org.rent.circle.maintenance.api.enums.Status;
 
@@ -264,5 +270,79 @@ public class MaintenanceResourceTest {
             .get("?page=0")
             .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    @NoMaintenanceRequestUser
+    public void PUT_updateRequestItems_WhenRequestsCantBeFound_ShouldReturnNoContent() {
+        // Arrange
+        UpdateRequestItemsDto updateRequestItemsDto = UpdateRequestItemsDto
+            .builder()
+            .maintenanceRequestId(100L)
+            .billables(Collections.emptyList())
+            .labors(Collections.emptyList())
+            .build();
+
+        // Act
+        // Assert
+        given()
+            .contentType("application/json")
+            .body(updateRequestItemsDto)
+            .when()
+            .put("/item")
+            .then()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    public void PUT_updateRequestItems_WhenGivenAnInvalidRequest_ShouldReturnBadRequest() {
+        // Arrange
+        UpdateRequestItemsDto updateRequestItemsDto = UpdateRequestItemsDto
+            .builder()
+            .maintenanceRequestId(100L)
+            .build();
+
+        // Act
+        // Assert
+        given()
+            .contentType("application/json")
+            .body(updateRequestItemsDto)
+            .when()
+            .put("/item")
+            .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    public void PUT_updateRequestItems_WhenCalled_ShouldUpdateRequestWithNewItems() {
+        // Arrange
+        BillableDto billableDto = BillableDto.builder()
+            .rate(100.0D)
+            .description("Billable")
+            .quantity(1)
+            .build();
+        LaborDto laborDto = LaborDto.builder()
+            .hours(1F)
+            .workCompletedAt(LocalDate.now())
+            .description("Labor")
+            .build();
+        UpdateRequestItemsDto updateRequestItemsDto = UpdateRequestItemsDto
+            .builder()
+            .maintenanceRequestId(100L)
+            .billables(Collections.singletonList(billableDto))
+            .labors(Collections.singletonList(laborDto))
+            .build();
+
+        // Act
+        // Assert
+        given()
+            .contentType("application/json")
+            .body(updateRequestItemsDto)
+            .when()
+            .put("/item")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .body("billables", is(Matchers.hasSize(1)),
+                "labors", is(Matchers.hasSize(1)));
     }
 }
