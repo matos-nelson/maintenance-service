@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS category (
-  id tinyint PRIMARY KEY AUTO_INCREMENT,
+  id bigint PRIMARY KEY AUTO_INCREMENT,
   name varchar(50) NOT NULL,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS maintenance_request (
   manager_id varchar(255) NOT NULL,
   resident_id bigint NOT NULL,
   property_id bigint NOT NULL,
-  category_id smallint NOT NULL,
+  category_id bigint NOT NULL,
   description varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   note varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   instructions varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS maintenance_request (
 CREATE TABLE IF NOT EXISTS labor (
   id bigint PRIMARY KEY AUTO_INCREMENT,
   maintenance_request_id bigint NOT NULL,
-  work_completed_at datetime DEFAULT NULL,
+  work_completed_at date DEFAULT NULL,
   hours float(6, 2) NOT NULL,
   description varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS labor (
 CREATE TABLE IF NOT EXISTS billable (
   id bigint PRIMARY KEY AUTO_INCREMENT,
   maintenance_request_id bigint NOT NULL,
-  quantity smallint NOT NULL,
+  quantity integer NOT NULL,
   rate double(6, 2) NOT NULL,
   description varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

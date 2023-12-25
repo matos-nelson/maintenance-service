@@ -243,6 +243,14 @@ public class MaintenanceResourceTest {
         assertEquals("Instructions", result.get(0).getInstructions());
         assertEquals("2 Note", result.get(0).getNote());
         assertEquals("COMPLETED", result.get(0).getStatus());
+        assertEquals(1, result.get(0).getLabors().size());
+        assertEquals("2023-10-10", result.get(0).getLabors().get(0).getWorkCompletedAt().toString());
+        assertEquals(3.5F, result.get(0).getLabors().get(0).getHours());
+        assertEquals("labor", result.get(0).getLabors().get(0).getDescription());
+        assertEquals(1, result.get(0).getBillables().size());
+        assertEquals(2, result.get(0).getBillables().get(0).getQuantity());
+        assertEquals(15.5F, result.get(0).getBillables().get(0).getRate());
+        assertEquals("billable", result.get(0).getBillables().get(0).getDescription());
     }
 
     @Test

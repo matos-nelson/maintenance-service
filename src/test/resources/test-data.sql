@@ -15,3 +15,9 @@ values (100, 'auth_user', 1, 1, 1, 'Windows', '1 Note', 'Instructions', 'IN_PROG
 
 INSERT INTO maintenance_request(id, manager_id, resident_id, property_id, category_id, description, note, instructions, status)
  values (200, 'test_user', 2, 2, 2, 'Windows', '2 Note', 'Instructions', 'COMPLETED');
+
+INSERT INTO labor(id, maintenance_request_id, work_completed_at, hours, description)
+ values(300, 200, '2023-10-10', 3.5, 'labor');
+
+INSERT INTO billable(id, maintenance_request_id, quantity, rate, description)
+ values(400, 200, 2, 15.5, 'billable');
