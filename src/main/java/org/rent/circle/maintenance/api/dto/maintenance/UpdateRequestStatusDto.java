@@ -13,7 +13,7 @@ import org.rent.circle.maintenance.api.enums.Status;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateMaintenanceRequestDto {
+public class UpdateRequestStatusDto {
 
     @NotNull
     private Long maintenanceRequestId;

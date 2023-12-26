@@ -5,15 +5,15 @@ import org.force66.beantester.BeanTester;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
-public class UpdateMaintenanceRequestDtoTest {
+public class UpdateRequestStatusDtoTest {
 
     @Test
-    public void UpdateMaintenanceRequestDto_SettersAndGetters_ShouldWork() {
+    public void UpdateRequestStatusDto_SettersAndGetters_ShouldWork() {
         // Arrange
         BeanTester beanTester = new BeanTester();
 
         // Act
-        beanTester.testBean(UpdateMaintenanceRequestDto.class);
+        beanTester.testBean(UpdateRequestStatusDto.class);
 
         // Assert
     }

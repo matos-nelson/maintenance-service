@@ -19,13 +19,19 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.apache.http.HttpStatus;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.rent.circle.maintenance.api.annotation.AuthUser;
+import org.rent.circle.maintenance.api.dto.maintenance.BillableDto;
+import org.rent.circle.maintenance.api.dto.maintenance.LaborDto;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
-import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestItemsDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestStatusDto;
 import org.rent.circle.maintenance.api.enums.Status;
 
 @QuarkusTest
@@ -102,7 +108,7 @@ public class MaintenanceResourceTest {
     @Test
     public void PATCH_WhenMaintenanceRequestWithGivenIdDoesNotExist_ShouldReturnNoContent() {
         // Arrange
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto
             .builder()
             .maintenanceRequestId(1000L)
             .status(Status.COMPLETED)
@@ -112,9 +118,9 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .contentType("application/json")
-            .body(updateMaintenanceRequestDto)
+            .body(updateRequestStatusDto)
             .when()
-            .patch()
+            .patch("/status")
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -123,7 +129,7 @@ public class MaintenanceResourceTest {
     @SingleMaintenanceRequestUser
     public void PATCH_WhenMaintenanceRequestIsNotValid_ShouldReturnNoContent() {
         // Arrange
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto
             .builder()
             .maintenanceRequestId(200L)
             .status(Status.COMPLETED)
@@ -133,9 +139,9 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .contentType("application/json")
-            .body(updateMaintenanceRequestDto)
+            .body(updateRequestStatusDto)
             .when()
-            .patch()
+            .patch("/status")
             .then()
             .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -143,7 +149,7 @@ public class MaintenanceResourceTest {
     @Test
     public void PATCH_WhenMaintenanceRequestIsValid_ShouldReturnMaintenanceRequest() {
         // Arrange
-        UpdateMaintenanceRequestDto updateMaintenanceRequestDto = UpdateMaintenanceRequestDto
+        UpdateRequestStatusDto updateRequestStatusDto = UpdateRequestStatusDto
             .builder()
             .maintenanceRequestId(100L)
             .status(Status.COMPLETED)
@@ -153,9 +159,9 @@ public class MaintenanceResourceTest {
         // Assert
         given()
             .contentType("application/json")
-            .body(updateMaintenanceRequestDto)
+            .body(updateRequestStatusDto)
             .when()
-            .patch()
+            .patch("/status")
             .then()
             .statusCode(HttpStatus.SC_OK)
             .body("residentId", is(1),
@@ -243,6 +249,14 @@ public class MaintenanceResourceTest {
         assertEquals("Instructions", result.get(0).getInstructions());
         assertEquals("2 Note", result.get(0).getNote());
         assertEquals("COMPLETED", result.get(0).getStatus());
+        assertEquals(1, result.get(0).getLabors().size());
+        assertEquals("2023-10-10", result.get(0).getLabors().get(0).getWorkCompletedAt().toString());
+        assertEquals(3.5F, result.get(0).getLabors().get(0).getHours());
+        assertEquals("labor", result.get(0).getLabors().get(0).getDescription());
+        assertEquals(1, result.get(0).getBillables().size());
+        assertEquals(2, result.get(0).getBillables().get(0).getQuantity());
+        assertEquals(15.5F, result.get(0).getBillables().get(0).getRate());
+        assertEquals("billable", result.get(0).getBillables().get(0).getDescription());
     }
 
     @Test
@@ -256,5 +270,79 @@ public class MaintenanceResourceTest {
             .get("?page=0")
             .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    @NoMaintenanceRequestUser
+    public void PUT_updateRequestItems_WhenRequestsCantBeFound_ShouldReturnNoContent() {
+        // Arrange
+        UpdateRequestItemsDto updateRequestItemsDto = UpdateRequestItemsDto
+            .builder()
+            .maintenanceRequestId(100L)
+            .billables(Collections.emptyList())
+            .labors(Collections.emptyList())
+            .build();
+
+        // Act
+        // Assert
+        given()
+            .contentType("application/json")
+            .body(updateRequestItemsDto)
+            .when()
+            .put("/item")
+            .then()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    public void PUT_updateRequestItems_WhenGivenAnInvalidRequest_ShouldReturnBadRequest() {
+        // Arrange
+        UpdateRequestItemsDto updateRequestItemsDto = UpdateRequestItemsDto
+            .builder()
+            .maintenanceRequestId(100L)
+            .build();
+
+        // Act
+        // Assert
+        given()
+            .contentType("application/json")
+            .body(updateRequestItemsDto)
+            .when()
+            .put("/item")
+            .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    public void PUT_updateRequestItems_WhenCalled_ShouldUpdateRequestWithNewItems() {
+        // Arrange
+        BillableDto billableDto = BillableDto.builder()
+            .rate(100.0D)
+            .description("Billable")
+            .quantity(1)
+            .build();
+        LaborDto laborDto = LaborDto.builder()
+            .hours(1F)
+            .workCompletedAt(LocalDate.now())
+            .description("Labor")
+            .build();
+        UpdateRequestItemsDto updateRequestItemsDto = UpdateRequestItemsDto
+            .builder()
+            .maintenanceRequestId(100L)
+            .billables(Collections.singletonList(billableDto))
+            .labors(Collections.singletonList(laborDto))
+            .build();
+
+        // Act
+        // Assert
+        given()
+            .contentType("application/json")
+            .body(updateRequestItemsDto)
+            .when()
+            .put("/item")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .body("billables", is(Matchers.hasSize(1)),
+                "labors", is(Matchers.hasSize(1)));
     }
 }

@@ -8,7 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
-import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestItemsDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestStatusDto;
 import org.rent.circle.maintenance.api.enums.Status;
 import org.rent.circle.maintenance.api.persistence.model.Category;
 import org.rent.circle.maintenance.api.persistence.model.MaintenanceRequest;
@@ -45,7 +46,7 @@ public class MaintenanceService {
     }
 
     @Transactional
-    public MaintenanceRequestDto updateRequest(UpdateMaintenanceRequestDto updateRequest, String managerId) {
+    public MaintenanceRequestDto updateRequestStatus(UpdateRequestStatusDto updateRequest, String managerId) {
         MaintenanceRequest maintenanceRequestDb = maintenanceRequestRepository.findByIdAndManagerId(
             updateRequest.getMaintenanceRequestId(), managerId);
 
@@ -81,5 +82,22 @@ public class MaintenanceService {
         List<MaintenanceRequest> maintenanceRequests = maintenanceRequestRepository
             .findMaintenanceRequests(managerId, page, pageSize);
         return maintenanceMapper.toDtoList(maintenanceRequests);
+    }
+
+    @Transactional
+    public MaintenanceRequestDto updateRequestItems(UpdateRequestItemsDto updateRequestItems, String managerId) {
+        MaintenanceRequest maintenanceRequestDb = maintenanceRequestRepository.findByIdAndManagerId(
+            updateRequestItems.getMaintenanceRequestId(), managerId);
+
+        if (maintenanceRequestDb == null) {
+            log.info("Could Not Find Maintenance Request With Given Id: {}",
+                updateRequestItems.getMaintenanceRequestId());
+            return null;
+        }
+
+        maintenanceMapper.updateRequestItems(updateRequestItems, maintenanceRequestDb);
+        maintenanceRequestRepository.persist(maintenanceRequestDb);
+
+        return maintenanceMapper.toDto(maintenanceRequestDb);
     }
 }

@@ -8,6 +8,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -19,7 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.rent.circle.maintenance.api.dto.maintenance.MaintenanceRequestDto;
 import org.rent.circle.maintenance.api.dto.maintenance.SaveMaintenanceRequestDto;
-import org.rent.circle.maintenance.api.dto.maintenance.UpdateMaintenanceRequestDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestItemsDto;
+import org.rent.circle.maintenance.api.dto.maintenance.UpdateRequestStatusDto;
 import org.rent.circle.maintenance.api.service.MaintenanceService;
 
 @AllArgsConstructor
@@ -39,9 +41,17 @@ public class MaintenanceResource {
     }
 
     @PATCH
-    public MaintenanceRequestDto updateMaintenanceRequest(
-        @Valid UpdateMaintenanceRequestDto updateMaintenanceRequestDto) {
-        return maintenanceService.updateRequest(updateMaintenanceRequestDto, jwt.getName());
+    @Path("/status")
+    public MaintenanceRequestDto updateMaintenanceRequestStatus(
+        @Valid UpdateRequestStatusDto updateRequestStatusDto) {
+        return maintenanceService.updateRequestStatus(updateRequestStatusDto, jwt.getName());
+    }
+
+    @PUT
+    @Path("/item")
+    public MaintenanceRequestDto updateMaintenanceRequestItems(
+        @Valid UpdateRequestItemsDto updateRequestItemsDto) {
+        return maintenanceService.updateRequestItems(updateRequestItemsDto, jwt.getName());
     }
 
     @GET
